@@ -1,0 +1,27 @@
+Required software:
+-gnuplot
+-browser/image viewer
+-paraview
+-boost
+
+
+Steps to run axisymmetricRing:
+
+0. be in axisymmetricRing directory
+1. get makefile to work on your system
+2. edit simulation parameters in 'src/main.cpp'
+3. remove compiled files: 'make clean'
+4. make: 'make'
+5. go to the results directory and clear it: 'cd results' & './clean.sh'
+6. return to axisymmstricRing directory: 'cd ..'
+7. run program: './bin/main.exe'
+
+Steps to view results:
+1. go to the result directory: 'cd results'
+2. update plot.sh with browser or image viewer: 'vi plot.sh'
+3. run plotter: './plot.sh'
+4. view plots in browser or image viewer
+5. view video with paraview (files in vtkFiles/ directory)
+
+
+*Method descriptions are mostly found in the header files.
