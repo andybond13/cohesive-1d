@@ -194,8 +194,8 @@ void CartRing::setCohLaw ( const std::string& lawTyp,
         if ( param.size() >= 2 ) {
             // _SigC
             if ( param[0].size() == 1 ) {
-                _SigC.assign( _Nx, param[0][0] );
-            } else if ( param[0].size() == _Nx ) {
+                _SigC.assign( _Nx-1, param[0][0] );
+            } else if ( param[0].size() == _Nx-1 ) {
                 _SigC.assign( param[0].begin(), param[0].end() );
             } else {
                 std::cout << "param[0].size() and # of cohesive links "
@@ -203,12 +203,12 @@ void CartRing::setCohLaw ( const std::string& lawTyp,
                           << "only the first value " << param[0][0]
                           << " is considered for all the elements"
                           << std::endl;
-                _SigC.assign( _Nx, param[0][0] );
+                _SigC.assign( _Nx-1, param[0][0] );
             }
             // _DelC
             if ( param[1].size() == 1 ) {
-                _DelC.assign( _Nx, param[1][0] );
-            } else if ( param[1].size() == _Nx ) {
+                _DelC.assign( _Nx-1, param[1][0] );
+            } else if ( param[1].size() == _Nx-1 ) {
                 _DelC.assign( param[1].begin(), param[1].end() );
             } else {
                 std::cout << "param[1].size() and # of cohesive links"
@@ -216,7 +216,7 @@ void CartRing::setCohLaw ( const std::string& lawTyp,
                           << "only the first value " << param[1][0]
                           << " is considered for all the elements"
                           << std::endl;
-                _DelC.assign( _Nx, param[1][0] );
+                _DelC.assign( _Nx-1, param[1][0] );
             }
         } else {
              std::cout << "LINSD requires two parameters sigma_c and delta_c"
@@ -227,8 +227,8 @@ void CartRing::setCohLaw ( const std::string& lawTyp,
         if ( param.size() >= 2 ) {
             // _SigC
             if ( param[0].size() == 1 ) {
-                _SigC.assign( _Nx, param[0][0] );
-            } else if ( param[0].size() == _Nx ) {
+                _SigC.assign( _Nx-1, param[0][0] );
+            } else if ( param[0].size() == _Nx-1 ) {
                 _SigC.assign( param[0].begin(), param[0].end() );
             } else {
                 std::cout << "param[0].size() and # of cohesive links"
@@ -236,26 +236,26 @@ void CartRing::setCohLaw ( const std::string& lawTyp,
                           << "only the first value " << param[0][0]
                           << " is considered for all the elements"
                           << std::endl;
-                _SigC.assign( _Nx, param[0][0] );
+                _SigC.assign( _Nx-1, param[0][0] );
             }
             // _DelC
-            if ( param[1].size() == _Nx ) {
-                _DelC.resize( _Nx );
-                if ( param[0].size() != _Nx ) {
-                    for ( unsigned i = 0; i < _Nx; i++ ) {
+            if ( param[1].size() == _Nx-1 ) {
+                _DelC.resize( _Nx-1 );
+                if ( param[0].size() != _Nx-1 ) {
+                    for ( unsigned i = 0; i < _Nx-1; i++ ) {
                         _DelC[i] = 2 * param[1][i] / param[0][0];	//Gc = sigma*delta/2; delta=2*Gc/s
                     }
                 } else {
-                    for ( unsigned i = 0; i < _Nx; i++ ) {
+                    for ( unsigned i = 0; i < _Nx-1; i++ ) {
                         _DelC[i] = 2 * param[1][i] / param[0][i];
                     }
                 }
             } else {
-                if ( param[0].size() != _Nx ) {
-                    _DelC.assign( _Nx, 2 * param[1][0] / param[0][0] );
+                if ( param[0].size() != _Nx-1 ) {
+                    _DelC.assign( _Nx-1, 2 * param[1][0] / param[0][0] );
                 } else {
-                    _DelC.resize( _Nx );
-                    for ( unsigned i = 0; i < _Nx; i++ ) {
+                    _DelC.resize( _Nx-1 );
+                    for ( unsigned i = 0; i < _Nx-1; i++ ) {
                         _DelC[i] = 2 * param[1][0] / param[0][i];
                     }
                 }
@@ -276,8 +276,8 @@ void CartRing::setCohLaw ( const std::string& lawTyp,
         if ( param.size() >= 2 ) {
             // _SigC
             if ( param[0].size() == 1 ) {
-                _SigC.assign( _Nx, param[0][0] );
-            } else if ( param[0].size() == _Nx ) {
+                _SigC.assign( _Nx-1, param[0][0] );
+            } else if ( param[0].size() == _Nx-1 ) {
                 _SigC.assign( param[0].begin(), param[0].end() );
             } else {
                 std::cout << "param[0].size() and # of cohesive links"
@@ -285,26 +285,26 @@ void CartRing::setCohLaw ( const std::string& lawTyp,
                           << "only the first value " << param[0][0]
                           << " is considered for all the elements"
                           << std::endl;
-                _SigC.assign( _Nx, param[0][0] );
+                _SigC.assign( _Nx-1, param[0][0] );
             }
             // _DelC
-            if ( param[1].size() == _Nx ) {
-                _DelC.resize( _Nx );
-                if ( param[0].size() != _Nx ) {
-                    for ( unsigned i = 0; i < _Nx; i++ ) {
+            if ( param[1].size() == _Nx-1 ) {
+                _DelC.resize( _Nx-1 );
+                if ( param[0].size() != _Nx-1 ) {
+                    for ( unsigned i = 0; i < _Nx-1; i++ ) {
                         _DelC[i] = 3 * param[1][i] / param[0][0];	//Gc = sigma*delta/3; delta=3*Gc/sigmac
                     }
                 } else {
-                    for ( unsigned i = 0; i < _Nx; i++ ) {
+                    for ( unsigned i = 0; i < _Nx-1; i++ ) {
                         _DelC[i] = 3 * param[1][i] / param[0][i];
                     }
                 }
             } else {
-                if ( param[0].size() != _Nx ) {
-                    _DelC.assign( _Nx, 3 * param[1][0] / param[0][0] );
+                if ( param[0].size() != _Nx-1 ) {
+                    _DelC.assign( _Nx-1, 3 * param[1][0] / param[0][0] );
                 } else {
-                    _DelC.resize( _Nx );
-                    for ( unsigned i = 0; i < _Nx; i++ ) {
+                    _DelC.resize( _Nx-1 );
+                    for ( unsigned i = 0; i < _Nx-1; i++ ) {
                         _DelC[i] = 3 * param[1][0] / param[0][i];
                     }
                 }
@@ -327,80 +327,48 @@ void CartRing::setCohLaw ( const std::string& lawTyp,
 		assert(1==0);
     }
 
-    // resize _ActivCoh, _D, _delta, _and _sigCoh
-    _ActivCoh.assign( _Nx, false );
-    _D.resize( _Nx );
-    _delta.resize( _Nx );
-    _sigCoh.resize( _Nx );
+    // resize _ActivCoh, _D, _delta, _and _sigCoh to be size of # of cohesive zones: Nx-1
+    _ActivCoh.assign( _Nx-1, false );
+    _D.resize( _Nx-1 );
+    _delta.resize( _Nx-1 );
+    _sigCoh.resize( _Nx-1 );
     for ( unsigned i = _begin; i <= _end; i++ ) {
+        if (i == _Nx - 1) continue;
         _D[i].resize(2);
     }
 }
 
-void CartRing::applyForc ( const std::string& loadTyp,
-                           const std::string& loadDir,
-                           const double loadVal ) {
-
-    unsigned type = 0;		//temporary variable for loading rate - 1 or 2,constant or linear
-    if ( loadTyp.compare( 0, 4, "CONS") == 0 ) {
-        type = 1;
-    } else if ( loadTyp.compare( 0, 4, "LINE") == 0 ) {
-        type = 2;
-    } else {
-        std::cout << "Load type " << loadTyp << " not yet implemented!"
-                  << std::endl;
-		assert(1==0);
+void CartRing::applyVel (  const std::string& velDir, const double strainRate  ) {
+    for ( unsigned i = 0; i < _Vel.size(); i++ ) {
+        if (!_local[i]) continue;
+        _Vel[i][0][0] = 0.0;//initialize velocity
+        _Vel[i][0][1] = 0.0;
     }
 
-    if ( loadDir.compare( 0, 5, "RADIA") == 0 ) {	//a radial force - Assign type and value to NFBC & VFBC[0]
-        _NodForcBC[0] = type;
-        _ValForcBC[0] = loadVal;
-    } else if ( loadDir.compare( 0, 5, "THETA") == 0 ) {	//a circumferencial force - Assign type and value to NFBC & VFBC[1]
-        _NodForcBC[1] = type;
-        _ValForcBC[1] = loadVal;
-    } else {
-        std::cout << "Direction " << loadDir << " unknown !" << std::endl; 
-		assert(1==0);
-    }
-}
-
-void CartRing::applyVel (  const std::string& velDir, const double velVal  ) {
-    //Constant Velocity / Strain Rate Case
-    initVel(velDir, velVal);	//initialize velocity, add it to w_ext
-    _ConstSRFlag = 1;		//flag that indicates this case - constant target strain rate
-    if ( velDir.compare( 0, 5, "RADIA") == 0 ) {	//a radial velocity - Assign direction and value to VVBC
-        _ValVelBC[0] = 1;
-        _ValVelBC[1] = velVal;
-    } else if ( velDir.compare( 0, 5, "THETA") == 0 ) {	//a circumferential/rotational velocity - Assign direction and value to VVBC
+    //Constant Strain Rate Case
+    if ( velDir.compare( 0, 8, "CONST_SR") == 0 ) {	//a radial velocity - Assign direction and value to VVBC
+        _ValVelBC[0] = 0;
+        _ValVelBC[1] = strainRate; //target strain rate
+    } else if ( velDir.compare( 0, 9, "CONST_VEL") == 0 ) {	//a radial velocity - Assign direction and value to VVBC
         _ValVelBC[0] = 2;
-        _ValVelBC[1] = velVal;
+        _ValVelBC[1] = strainRate; //target velocity
     } else {
         std::cout << "Direction " << velDir << " unknown! " << std::endl; 
 		assert(1==0);
     }
+
 }
 
-void CartRing::initVel ( const std::string& velDir, const double velVal ) {
-    //Determine loading direction	
-    if ( velDir.compare( 0, 5, "RADIA") == 0 ) {	//a radial velocity
-        for ( unsigned i = 0; i < _Vel.size(); i++ ) {
-			if (!_local[i]) continue;
-            _Vel[i][0][0] = velVal * cosTheta(i);	//initialize velocity
-            _Vel[i][0][1] = velVal * sinTheta(i);
-        }
-	//_ValForcBC[0] = velVal;		//????? I do not know why this is here,
-    } else if ( velDir.compare( 0, 5, "THETA") == 0 ) {//a circumferential/rotational velocity
-        for ( unsigned i = 0; i < _Vel.size(); i++ ) {
-			if (!_local[i]) continue;
-            _Vel[i][0][0] = -1.0 * velVal * sinTheta(i);//initialize velocity
-            _Vel[i][0][1] = velVal * cosTheta(i);
-        }
-    } else {
-        std::cout << "Direction " << velDir << " unknown! " << std::endl; 
-		assert(1==0);
+void CartRing::applyForc ( const double forcVal  ) {
+    //applied force on end
+    for ( unsigned i = 0; i < _Vel.size(); i++ ) {
+        if (!_local[i]) continue;
+        _Vel[i][0][0] = 0.0;//initialize velocity
+        _Vel[i][0][1] = 0.0;
     }
-     //count initial velocity as an initial external work/given energy
-    _Wext += 0.5 * (_m * 2 * _Nx) * pow( velVal , 2) * (double)(_end-_begin+1)/(double)_Nx;
+
+    _ValVelBC[0] = 1;
+    _ValVelBC[1] = forcVal;
 }
 
 void CartRing::solve ( const double endTime, const unsigned printFrequency, const double refine, const bool allowPlateauEnd, const bool checkEnergy ) {
@@ -432,8 +400,8 @@ void CartRing::solve ( const double endTime, const unsigned printFrequency, cons
 		timeStepRefine(refine);		//refine timestep if needed using the time-step flags.
 
         // Increase current time and time-step, update time-step flags
-        _T += _Dt;
         _Nt++;
+        _T = _Dt * static_cast<double>(_Nt);
 		_tFlag[0] = _tFlag[1];	//save current time-step flag
 		_tFlag[1] = 0;		//initialize new time-step flag
 		_stopFlag = false;	//initialize stop flag
@@ -747,30 +715,33 @@ std::string CartRing::convertInt(int number) const
 }
 
 void CartRing::buildDiscretization () {
+    //this has been converted from axisymmetricRing->flaming-avenger so that it is linear, x = [0,L];
 
     // Build _NodPos, assign node locations
     _NodPos.resize( 2*_Nx ); 		//node locations[node number][x or y]
     _NodPosOrig.resize( 2*_Nx ); 
     for ( unsigned i = 1; i <= _Nx; i++ ) { 
-        unsigned k = ( 2*i ) % ( 2*_Nx ); 
-        _NodPos[2*i-1].resize( 2 ); 
+        unsigned k = 2*i-2;
+        unsigned j = 2*i-1;
+        _NodPos[j].resize( 2 ); 
         _NodPos[k].resize( 2 ); 
-        _NodPosOrig[2*i-1].resize( 2 ); 
+        _NodPosOrig[j].resize( 2 ); 
         _NodPosOrig[k].resize( 2 ); 
-        double theta = 2*PI*i/_Nx; 
-        _NodPos[2*i-1][0] = _R0 * cos( theta ); 
-        _NodPos[2*i-1][1] = _R0 * sin( theta ); 
-        _NodPos[k][0] = _R0 * cos( theta ); 
-        _NodPos[k][1] = _R0 * sin( theta ); 
-        _NodPosOrig[2*i-1][0] = _R0 * cos( theta ); 
-        _NodPosOrig[2*i-1][1] = _R0 * sin( theta ); 
-        _NodPosOrig[k][0] = _R0 * cos( theta ); 
-        _NodPosOrig[k][1] = _R0 * sin( theta ); 
+        double thetaK = static_cast<double>(i-1)/_Nx; 
+        double thetaJ = static_cast<double>(i)/_Nx; 
+        _NodPos[j][0] = _L*thetaJ;
+        _NodPos[j][1] = 0.0; 
+        _NodPos[k][0] = _L*thetaK;
+        _NodPos[k][1] = 0.0; 
+        _NodPosOrig[j][0] = _L*thetaJ;; 
+        _NodPosOrig[j][1] = 0.0; 
+        _NodPosOrig[k][0] = _L*thetaK;; 
+        _NodPosOrig[k][1] = 0.0; 
     } 
 
     // Build connectivities - assign nodes to springs and links
     _SprCon.resize( _Nx );
-    _CohCon.resize( _Nx );
+    _CohCon.resize( _Nx -1 );
     _NodCon.resize( _NodPos.size() );
     for ( unsigned i = 0; i < _Nx; i++ ) {
         // Build _SpringConnec and _NodeConnec accordingly
@@ -778,11 +749,14 @@ void CartRing::buildDiscretization () {
         _NodCon[2*i].first = i;
         _SprCon[i].second = 2*i+1;
         _NodCon[2*i+1].first = i;
+
         // Build _CoheJointConnec and _NodeConnec accordingly
-        unsigned k = ( 2*(i+1) ) % ( 2*_Nx );
-        _CohCon[i].first = 2*i+1;
-        _NodCon[2*i+1].second = i;
-        _CohCon[i].second = k;
+        if (i == _Nx - 1) break;
+        unsigned k = 2*i+1;
+        unsigned j = 2*i+2;
+        _CohCon[i].first = k;
+        _NodCon[j].second = i;
+        _CohCon[i].second = j;
         _NodCon[k].second = i;
     }
     printConnec();	//print table of connections for for small meshes
@@ -840,12 +814,7 @@ void CartRing::buildDiscretization () {
     _DSum = 0;
     _stopFlag = false;
 
-    //Initialize constant strain rate flag
-    _ConstSRFlag = 0;
-
     // Resize vectors for BC
-    _NodForcBC.resize(2);
-    _ValForcBC.resize(2);
     _ValVelBC.resize(2);
     _VelForcReq.resize( _NodPos.size() );
     for ( unsigned i = 0; i < _NodPos.size(); i++ ) {
@@ -870,6 +839,7 @@ void CartRing::NewmarkPred () {
         // Predict Velocities
         _Vel[i][1][0] = _Vel[i][0][0] + 0.5 * _Dt * _Acc[i][0][0];
         _Vel[i][1][1] = _Vel[i][0][1] + 0.5 * _Dt * _Acc[i][0][1];
+        if ((i == 2*_Nx-1) && (_ValVelBC[0] == 2) ) _Vel[i][1][0] = _ValVelBC[1];
 
         // Apply Boundary Conditions
         /* NOT YET SURE ON HOW TO DO IT */
@@ -877,6 +847,8 @@ void CartRing::NewmarkPred () {
         _Dis[i][1][0] = _Dt * _Vel[i][1][0];
         _Dis[i][1][1] = _Dt * _Vel[i][1][1];
     }
+   _Dis[0][1][0] = 0.0;
+   _Dis[0][1][1] = 0.0;
 }
 
 void CartRing::NewmarkReso () {
@@ -921,6 +893,7 @@ void CartRing::NewmarkReso () {
 				size = _end - _begin + 1;
 				begin = _begin;
 				for ( unsigned i = _begin; i <= _end; i++ ) {
+                    if (i == _Nx - 1) continue;
 					std::vector<double> wCoh = cohForc( i );
 					_Wcoh[0] += wCoh[0];
 					_Wcoh[1] += wCoh[1];
@@ -933,6 +906,7 @@ void CartRing::NewmarkReso () {
 		}
 	} else {
 		for ( unsigned i = _begin; i <= _end; i++ ) {
+            if (i == _Nx - 1) continue;
 			std::vector<double> wCoh = cohForc( i );
 			_Wcoh[0] += wCoh[0];
 			_Wcoh[1] += wCoh[1];
@@ -992,12 +966,10 @@ void CartRing::NewmarkReso () {
 		MPI::COMM_WORLD.Bcast( &_stopFlag, 1, MPI::BOOL, 0);
 	}
 
-    //Adjust for constant  strain rate --calculate _VelForcReq needed to maintain const SR
-    if ( _ConstSRFlag == 1 ) {
-        for ( unsigned i = 0; i < _NodPos.size(); i++) {
+    //Adjust for boundary conditions --calculate _VelForcReq
+    for ( unsigned i = 0; i < _NodPos.size(); i++) {
 			if (!_local[i]) continue;
-		    calcVelForc(i);
-        }
+		    boundaryConditions(i);
     }
 
 
@@ -1013,6 +985,7 @@ void CartRing::NewmarkReso () {
         _Acc[i][1][0] = ( _Fext[i][1][0] + _Fspr[i][0] + _Fcoh[i][0] ) / _m;
         _Acc[i][1][1] = ( _Fext[i][1][1] + _Fspr[i][1] + _Fcoh[i][1] ) / _m;
     }
+cout << "fext(0) = " << _Fext[0][1][0] << " , _fspr(0) = " << _Fspr[0][0] << " , _fcoh(0) = " << _Fcoh[0][0] << endl;
 }
 
 void CartRing::NewmarkCorr () {
@@ -1027,6 +1000,8 @@ void CartRing::NewmarkCorr () {
         _Vel[i][2][0] = _Vel[i][1][0] + 0.5 * _Dt * _Acc[i][1][0];
         _Vel[i][2][1] = _Vel[i][1][1] + 0.5 * _Dt * _Acc[i][1][1];
 
+        if ((i == 2*_Nx-1) && (_ValVelBC[0] == 2) ) _Vel[i][2][0] = _ValVelBC[1];
+
         // Compute the kinematic energy
         _Wkin += 0.5 * _m * ( pow( _Vel[i][2][0], 2 ) + pow( _Vel[i][2][1], 2 ) );
  
@@ -1034,6 +1009,10 @@ void CartRing::NewmarkCorr () {
         _Dis[i][2][0] = _Dis[i][1][0];
         _Dis[i][2][1] = _Dis[i][1][1];
     }
+    _Vel[0][2][0] = 0.0;
+    _Vel[0][2][1] = 0.0;
+    _Dis[0][2][0] = 0.0;
+    _Dis[0][2][1] = 0.0;
 }
 
 double CartRing::sprForc ( const unsigned sprNum ) {
@@ -1096,7 +1075,7 @@ std::vector<double> CartRing::cohForc ( const unsigned cohNum ) {
         _Fcoh[nod_2][1] = -0.5 * ( _Fspr[nod_2][1] - _Fspr[nod_1][1] );
 
         // Test the value of the cohesive stress
-        if ( _SigC.size() == _Nx ) {
+        if ( _SigC.size() == _Nx -1 ) {
 			_sigCoh[cohNum] = 0;
 		    _sigCoh[cohNum] = cosThetaPred( nod_1 ) * _Fcoh[nod_1][1] / _A
 		        			- sinThetaPred( nod_1 ) * _Fcoh[nod_1][0] / _A;
@@ -1109,7 +1088,8 @@ std::vector<double> CartRing::cohForc ( const unsigned cohNum ) {
 				int d_num = (int)floor( _defectRange * (double)(_Nx) / _L) ;
 		      	for (int i = -d_num; i <= d_num; i++) {
 					//Create link number that is checked against
-		            int j = ( i + (int)(cohNum) + _Nx) % _Nx;
+		            unsigned j = ( i + (int)(cohNum) + _Nx) % _Nx;
+                    if (j == _Nx - 1) continue;
 					if (_ActivCoh[j] == true) { 
 						defectRangeFlag = true;		//true if link is open
 					}
@@ -1134,15 +1114,11 @@ std::vector<double> CartRing::cohForc ( const unsigned cohNum ) {
         // Compute crack opening distance
         std::vector<double> crack = cohVecPred( cohNum );
 
-	//Determine unit vector to midpoint of the cohesive link
-	double xAvg = 0.5 * (cosThetaPred( _CohCon[cohNum].first ) + cosThetaPred( _CohCon[cohNum].second ));
-	double yAvg = 0.5 * (sinThetaPred( _CohCon[cohNum].first ) + sinThetaPred( _CohCon[cohNum].second ));
-
 	//Assign delta as the cross-product of the crack location vector 
 		//and the crack opening (cohesive link) vector; delta in theta-dir only
 	//_delta[cohNum] = 0;
        // _delta[cohNum] = sqrt( pow( crack[0], 2 ) + pow( crack[1], 2 ) );
-	_delta[cohNum] = crack[1] * xAvg - crack[0] * yAvg;	
+	_delta[cohNum] = crack[0];	
 
 	//Assign damage as ratio of delta to maximum separation
 	//Store _D[][] as the maxiumum damage
@@ -1158,12 +1134,10 @@ std::vector<double> CartRing::cohForc ( const unsigned cohNum ) {
         cohStr( cohNum ); //assign _sigCoh
 
         // Compute the cohesive force and apply in the theta direction
-	double cosPhi = -yAvg; //used to be -sinTheta(_CohCon[cohNum].first);
-	double sinPhi = xAvg; //used to be cosTheta(_CohCon[cohNum].first);
-        _Fcoh[nod_1][0] = _A * _sigCoh[cohNum] * cosPhi;
-        _Fcoh[nod_1][1] = _A * _sigCoh[cohNum] * sinPhi;
-        _Fcoh[nod_2][0] = -1.0 * _A * _sigCoh[cohNum] * cosPhi;
-        _Fcoh[nod_2][1] = -1.0 * _A * _sigCoh[cohNum] * sinPhi;
+        _Fcoh[nod_1][0] = _A * _sigCoh[cohNum] * 1.0;
+        _Fcoh[nod_1][1] = _A * _sigCoh[cohNum] * 0.0;
+        _Fcoh[nod_2][0] = -1.0 * _A * _sigCoh[cohNum] * 1.0;
+        _Fcoh[nod_2][1] = -1.0 * _A * _sigCoh[cohNum] * 0.0;
 
         // Compute cohesive energy
         wCoh[1] = 0.5 * _A * _sigCoh[cohNum] * _delta[cohNum];
@@ -1181,12 +1155,13 @@ std::vector<double> CartRing::cohForc ( const unsigned cohNum ) {
     return wCoh;
 }
 
-void CartRing::calcVelForc ( const unsigned i ) {
+void CartRing::boundaryConditions ( const unsigned i ) {
 
 	assert(_local[i]);
 
     //Calculate force at nodes required to maintain constant strain rate
-    double type = _ValVelBC[0]; 		//1 for radial, 2 for rotational
+    //0 for applied constant strain rate, 1 for applied force on end, 2 for applied constant velocity on end
+    double type = _ValVelBC[0]; 		
     double target = _ValVelBC[1];
 
     //Mechanism for disabling loading ONLY at locations with full fragments (DISABLED)
@@ -1199,33 +1174,58 @@ void CartRing::calcVelForc ( const unsigned i ) {
 
     //If loading is acceptable...calculate it
     if ( _DSum == 0 /*&& ok*/) {			//Any damage cancels all loading
-        if (type == 1) {
-            //Radial
-	    double past = _Vel[i][0][0] * cosTheta(i) + _Vel[i][0][1] * sinTheta(i);		//v_r at node
-	    double current = _Vel[i][1][0] * cosThetaPred(i) + _Vel[i][1][1] * sinThetaPred(i);	//v_r at node
-		
-	    //Calculate difference between target velocity and past/expected velocity
-		//multiplied by two to strengthen effect, no overshooting observed
-	    double diff = (target - past * 0.5 - current * 0.5) * 2.00;	
+        if (type == 0) {
+            //applied constant strain rate
+    	        _VelForcReq[i][0] = 0.0;
+            _VelForcReq[i][1] = 0.0;
 
-	    //Calculate required additional force to get to target F = ma = m*dv/dt
-	    _VelForcReq[i][0] = (diff / _Dt) * cosThetaPred(i) * _m;	//in e_r direction, dotp with e_r
-	    _VelForcReq[i][1] = (diff / _Dt) * sinThetaPred(i) * _m;
+            unsigned other = i;
+            double sign = 1;
+            if (i % 2 == 0) {
+                //this is left node of element
+                other++;
+                sign = 1;
+            } else { 
+                //this is right node of element
+                other--;
+                sign = -1;
+            }
+
+            double thisVel = 0.5 * (_Vel[i][0][0] + _Vel[i][1][0]); //use average of past and current
+            double otherVel = 0.5 * (_Vel[other][0][0] + _Vel[other][1][0]);
+            double elmVel = sign*otherVel - sign*thisVel; //differential velocity of whole element (dv)
+            double strainRate = elmVel / _Dx;
+
+            double diff = target - strainRate;
+		
+	       //Calculate required additional force to get to target F = ma = m*dv/dt
+    	        _VelForcReq[i][0] = -(diff / _Dt) * _Dx * _m * 0.5;
+            _VelForcReq[i][1] = 0.0;
+
+        } else if (type == 1) {
+            //applied force on end
+            _VelForcReq[i][0] = 0.0;
+            _VelForcReq[i][1] = 0.0;
+
+            if (i == 2 * _Nx - 1) _VelForcReq[i][0] = target;
 
         } else if (type == 2) {
-            //Rotational
-	    double past = -_Vel[i][0][0] * sinTheta(i) + _Vel[i][0][1] * cosTheta(i);	//v_th at node
-	    double current = -_Vel[i][1][0] * sinThetaPred(i) + _Vel[i][1][1] * cosThetaPred(i);//v_th at node
-	    double diff = (target - current * 0.5 - past * 0.5) * 2.0;		//see above
-	    _VelForcReq[i][0] = (diff / _Dt) * _m * -sinThetaPred(i);		//in e_theta dir
-	    _VelForcReq[i][1] = (diff / _Dt) * _m * cosThetaPred(i);		//crossp with e_r
+            //applied constant velocity on end
+            _VelForcReq[i][0] = 0.0;
+            _VelForcReq[i][1] = 0.0;
 
+            if (i == 2 * _Nx - 1) {
+                double thisVel = 0.5 * (_Vel[i][0][0] + _Vel[i][1][0]); //use average of past and current
+                double diff = target - thisVel;
+                _VelForcReq[i][0] = (diff / _Dt) * _m;
+            }
+            
         } else {
-		    std::cout << "Direction unknown!" << std::endl; 
+		    std::cout << "Boundary condition unknown!" << std::endl; 
         }
     } else {
-	_VelForcReq[i][0] = 0;		//...else make sure it's zero
-	_VelForcReq[i][1] = 0;
+        	_VelForcReq[i][0] = 0;		//...else make sure it's zero
+        _VelForcReq[i][1] = 0;
     }
 }
 
@@ -1235,38 +1235,13 @@ double CartRing::extForc ( const unsigned nodNum ) {
     //reset values to zero
     _Fext[nodNum][1][0] = 0;
     _Fext[nodNum][1][1] = 0; 
-    if ( _NodForcBC[0] == 1 ) {
-        // Constant radial force
-        _Fext[nodNum][1][0] = _ValForcBC[0] * cosThetaPred( nodNum );	//in e_r direction, dotp with e_r
-        _Fext[nodNum][1][1] = _ValForcBC[0] * sinThetaPred( nodNum ); 
-    }
 
-    if ( _NodForcBC[0] == 2 ) {
-        // Linear radial force (goal: constant velocity)
-		cout << "*** NOT PROGRAMMED. CONSTANT STRAIN RATE ATTAINED BY CORRECTIVE LOADING" << endl;
-		assert(1==0);
-	//*** NOT PROGRAMMED. CONSTANT STRAIN RATE ATTAINED BY CORRECTIVE LOADING
-	//	SEE applyVel(velDir,velVal) and calcVelFor(i)
-    }
-
-    if ( _NodForcBC[1] == 1 ) {
-        // Torque
-        double dist = sqrt( pow( _NodPos[nodNum][0] + _Dis[nodNum][1][0], 2 )		//expected position
-                          + pow( _NodPos[nodNum][1] + _Dis[nodNum][1][1], 2 ) );
-        _Fext[nodNum][1][0] = -1.0 * _ValForcBC[1] / dist	//M=rxF; F=M/r.
-                            * sinThetaPred( nodNum );
-        _Fext[nodNum][1][1] = _ValForcBC[1] / dist * cosThetaPred( nodNum ); //in e_theta dir,crossp with e_r
-    }
-
-    if (_ConstSRFlag == 1) {
-	//Constant velocity / strain rate
-	//Apply calculated correction loading from calcVelForc
+	//Apply calculated correction loading from calcVelForc/boundaryConditions
 	_Fext[nodNum][1][0] += _VelForcReq[nodNum][0];
-        _Fext[nodNum][1][1] += _VelForcReq[nodNum][1];
+    _Fext[nodNum][1][1] += _VelForcReq[nodNum][1];
 	//Reset to zero
 	_VelForcReq[nodNum][0] = 0;
 	_VelForcReq[nodNum][1] = 0;
-    }
 
     // Compute contribution to external energy of the node
     double wExt = _Vel[nodNum][1][0] * ( _Fext[nodNum][1][0] + _Fext[nodNum][0][0] )	//W = F*d = F*v*dt
@@ -1296,11 +1271,13 @@ double CartRing::stress ( const unsigned sprNum ) {
 		bool defectRangeFlag2 = false;	//for the other
         int d_num = (int)floor( _defectRange * (double)(_Nx) / _L) ;	//convert the range to # of links
         for (int i = -d_num; i <= d_num; i++) {
-            int j = ( i + (int)(sprNum) + _Nx) % _Nx;	//center the range at this element and check
+            unsigned j = ( i + (int)(sprNum) + _Nx) % _Nx;	//center the range at this element and check
+            if (j == _Nx - 1) continue;
 			if (_ActivCoh[j] == true) { 
 				defectRangeFlag = true;		//true if any links within range are open
 			}
-			int k = ( i + (int)(sprNum-1) + _Nx) % _Nx;
+			unsigned k = ( i + (int)(sprNum-1) + _Nx) % _Nx;
+            if (k == _Nx - 1) continue;
 			if (_ActivCoh[k] == true) { 
 				defectRangeFlag2 = true;		//true if any links within range are open
 	    	}
@@ -1441,16 +1418,18 @@ void CartRing::checkStable () {
     //Check to see if any cohesive link is in compression
     unsigned compression = 0;
     for (unsigned i = _begin; i <= _end; i++) {  
-	if (_sigCoh[i] < 0 ) {
-	    compression = 1;
-	    _tFlag[1] = 1;	//enable one level of time-step refinement
-	}
+        if (i == _Nx - 1) continue;
+        	if (_sigCoh[i] < 0 ) {
+	        compression = 1;
+	        _tFlag[1] = 1;	//enable one level of time-step refinement
+        	}
     }
 
     //Check to see if any link > 95% critical stress, or is within critical damage range
     //	meaning that its past the 95% mark and left of the scaled elastic modulus line
     unsigned temp = 0;
     for (unsigned i = _begin; i <= _end; i++ ){
+        if (i == _Nx - 1) continue;
 	 	if ( ( (_delta[i] > 0 ) && ( _D[i][1] < (_sigCoh[i]) / (_E/_Dx) )) || _sigCoh[i] > 0.95 * _SigC[i]) {
 			temp += 1; 		//count the number of links in this critical region
 		}
@@ -1478,6 +1457,7 @@ void CartRing::fragCount () {
     _DSum = 0;
 
     for (unsigned i = _begin; i <= _end; i++ ){
+         if (i == _Nx - 1) continue;
 		//Sum the total amount of damage to all links (analogous to WcohD)
 		_DSum += (_D[i][1] >= 1) ? 1 : _D[i][1];
 
@@ -1851,6 +1831,7 @@ void CartRing::update () {
 
     // Internal variables
     for ( unsigned i = _begin; i <= _end; i++ ) {
+        if (i == _Nx - 1) continue;
         _D[i][0] = _D[i][1];
     }
 }
@@ -2500,11 +2481,13 @@ void CartRing::printConnec () const {
         printf ( "|      Springs     |   Cohesive Zones  |\n" );
         printf ( "|   n1         n2  |   n1          n2  |\n" );
         printf ( "|------------------|-------------------|\n" );
-        for ( unsigned j = 0; j < _Nx; j++ ) {
+        for ( unsigned j = 0; j < _Nx-1; j++ ) {
             printf ( "|   %2d         %2d  |   %2d          %2d  |\n",
                      _SprCon[j].first, _SprCon[j].second,
                      _CohCon[j].first, _CohCon[j].second );
         }
+        printf ( "|   %2d         %2d  |                   |\n",
+                 _SprCon[_Nx-1].first, _SprCon[_Nx-1].second);
         printf ( "|------------------|-------------------|\n" );
     }
 }
@@ -2739,6 +2722,7 @@ void CartRing::printSTheta () const {
         pFile = fopen( _SThetaFile.c_str(), "a" );
         //fprintf( pFile, "%12.3e", _T );
 	for (unsigned i = 0; i < _Nx; i++) {
+        if (i == _Nx - 1) continue;
 		if (i < _begin || i > _end) continue;
 	    double sprTheta = (double)(360*(i+0.5))/(double)(_Nx);
 	    double cohTheta = (double)(360*(i+1))/(double)(_Nx);

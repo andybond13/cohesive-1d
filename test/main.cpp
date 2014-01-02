@@ -27,12 +27,12 @@ int main (int argc, char* argv[]) {
     double A   = 1.0e-6;   	// cross-sectional area, in m^2
     double rho = 2.75e+3;  	// density, in kg/m3
     double E   = 2.75e+11; 	// young's modulus, in Pa
-    int nx     = 30000;		// number of elements
+    int nx     = 100;		// number of elements
 	
 	//path to results directory
 //    std::string path = "~/andrew/Duke/results";
-	std::string path = "/Volumes/Stershic-HybridHD/Users/andrewstershic/Code/axisymmetricRing/results";
-    std::string multiResultsPath = "/Volumes/Stershic-HybridHS/Users/andrewstershic/Code/axisymmetricRing/results";
+	std::string path = "/Volumes/Stershic-HybridHD/Users/andrewstershic/Code/flaming-shame/results";
+    std::string multiResultsPath = "/Volumes/Stershic-HybridHS/Users/andrewstershic/Code/flaming-shame/results";
 
 	//create ring object
     CartRing ring( L, A, rho, E, nx, path );
@@ -41,8 +41,8 @@ int main (int argc, char* argv[]) {
 	//ring.applyForc( "CONS", "THETA", 6.0e-1 );
     //ring.initVel( "RADIA", 2.5*1.592e+1 );
     //ring.applyForc( "LINE", "RADIA", 1.592e+1 );
-    //ring.applyForc( "CONS", "RADIA", 6.0e-1 );
-    ring.applyVel( "RADIA", 4.5*1.592e+1);	//apply radial velocity: 4.5*1.592e+1 m/s -> strain rate = 9000 1/s; v = SR*L/(2*pi)
+//    ring.applyForc( 6.0e-1 );
+    ring.applyVel( "CONST_SR", 0.1);	//apply strain rate = 1000 1/s;
 
     // cohesive law
     /**/
@@ -61,7 +61,7 @@ int main (int argc, char* argv[]) {
     double param2 = 0;
     double param3 = 0;
 
-    MatPropGen properties(distrib, param1, param2, param3, nx);
+    MatPropGen properties(distrib, param1, param2, param3, nx-1);
     properties.assign(cohPar[0], cohNums); //assign randomly generated values to cohesive strength: cohPar[0]
     cohPar[1].assign( 1, 100 );	//Gc (in N/m = Pa*m) value for cohesive zone: cohPar[1]
     ring.setCohLaw( "SQRTSG", cohPar );	//set cohesive zone parameters

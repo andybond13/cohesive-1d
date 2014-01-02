@@ -59,12 +59,9 @@ public:
     /*!
         \brief Method to apply body force or torque depending on the load
                direction
-        \param loadTyp : CONS, LINE, ...
-        \param loadDir : RADIAL, THETA
         \param loadVal : value of the loading in s.i.u
     */
-    void applyForc ( const std::string& loadTyp, const std::string& loadDir,
-                     const double loadVal );
+    void applyForc ( const double loadVal );
 
     //! Method to apply constant velocity / strain rate on the mesh
     /*!
@@ -73,14 +70,6 @@ public:
         \param loadVal : value of the loading in s.i.u
     */
     void applyVel (  const std::string& velDir, const double velVal  );
-
-    //! Method to set initial conditions
-    /*!
-        \brief Method to set initial velocity
-        \param velDir : RADIAL, THETA
-        \param velVal : initial value of the prescribed velocity
-    */
-    void initVel ( const std::string& velDir, const double velVal );
 
     //! Solve the problem
     /*!
@@ -247,10 +236,10 @@ private:
 
     //! Compute required force for a node to maintain constant velocity
     /*!
-        \brief calcVelForc Method to compute the external force
+        \brief boundaryConditions Method to compute the external force
         \param nodNum node
     */
-    void calcVelForc ( const unsigned i );
+    void boundaryConditions ( const unsigned i );
 
     //! Compute stress at a given spring element
     /*!
@@ -477,15 +466,11 @@ private:
                _ValForcBC[i] : R (i=0), T (i=1)
                              -> Value of force or torque (i=1)
                _ValVelBC[i] : R = 1, T = 2 (i=0) -> Value of velocity or rotation (i=1)
-		   _ConstSRFlag : 0 if not, 1 if so
 		   _VelForcReq[i][j] : the force required to maintain constant velocity for
 						at node i. X-direction at j=0, y-direction at j = 1;
     */
-    std::vector<unsigned> _NodForcBC;
-    std::vector<double> _ValForcBC;
     std::vector<double> _ValVelBC;
     std::vector<std::vector<double> > _VelForcReq;
-    unsigned _ConstSRFlag;
 
     //! Attributes dealing with time evolution
     /*!
