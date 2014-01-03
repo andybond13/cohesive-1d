@@ -406,7 +406,7 @@ void CartRing::solve ( const double endTime, const unsigned printFrequency, cons
 
         // Increase current time and time-step, update time-step flags
         _Nt++;
-        _T = _Dt * static_cast<double>(_Nt);
+        _T += _Dt;
 		_tFlag[0] = _tFlag[1];	//save current time-step flag
 		_tFlag[1] = 0;		//initialize new time-step flag
 		_stopFlag = false;	//initialize stop flag
@@ -1082,9 +1082,7 @@ std::vector<double> CartRing::cohForc ( const unsigned cohNum ) {
         // Test the value of the cohesive stress
         if ( _SigC.size() == _Nx -1 ) {
 			_sigCoh[cohNum] = 0;
-		    _sigCoh[cohNum] = cosThetaPred( nod_1 ) * _Fcoh[nod_1][1] / _A
-		        			- sinThetaPred( nod_1 ) * _Fcoh[nod_1][0] / _A;
-	
+		    _sigCoh[cohNum] = _Fcoh[nod_1][0] / _A;
 			//Detect if this cohesive link is within the restricted zone of another,
 			//already open link
 			bool defectRangeFlag = false;	//Assume it is not
@@ -2238,6 +2236,13 @@ void CartRing::plotEnergies () {
     fprintf( pFileW, "set ylabel \"J/s\"\n" );
     fprintf( pFileW, "set output './pngFiles/enrgdWcoh100.svg'\n");
     fprintf( pFileW, "plot './datFiles/energies.dat' usi 1:13 ti 'dWcoh100' w l\n\n" );
+    fprintf( pFileW, "set output './pngFiles/enrgAll.svg'\n");
+    fprintf( pFileW, "plot './datFiles/energies.dat' usi 1:2 ti 'Wspr' w l ,\\\n");
+    fprintf( pFileW, "     './datFiles/energies.dat' usi 1:3 ti 'WcoD' w l ,\\\n");
+    fprintf( pFileW, "     './datFiles/energies.dat' usi 1:4 ti 'WcoE' w l ,\\\n");
+    fprintf( pFileW, "     './datFiles/energies.dat' usi 1:5 ti 'Wext' w l ,\\\n");
+    fprintf( pFileW, "     './datFiles/energies.dat' usi 1:6 ti 'Wkin' w l ,\\\n");
+    fprintf( pFileW, "     './datFiles/energies.dat' usi 1:($2+$3+$4+$6) ti 'Wsum' w l\n");
     fclose( pFileW );
 
     // Prepare Gnuplot data file
