@@ -2227,6 +2227,15 @@ void CartRing::plotEnergies () {
     fprintf( pFileW, "plot './datFiles/energies.dat' usi 1:8 ti 'Wsum' w l,\\\n" );
     fprintf( pFileW, "     './datFiles/energies.dat' usi 1:7 ti '0.01 * Wmax' w l\n\n" );
     fprintf( pFileW, "set ylabel \"J/s\"\n" );
+
+    fprintf( pFileW, "set output './pngFiles/enrgAll.svg'\n");
+    fprintf( pFileW, "plot './datFiles/energies.dat' usi 1:2 ti 'Wspr' w l ,\\\n");
+    fprintf( pFileW, "     './datFiles/energies.dat' usi 1:3 ti 'WcoD' w l ,\\\n");
+    fprintf( pFileW, "     './datFiles/energies.dat' usi 1:4 ti 'WcoE' w l ,\\\n");
+    fprintf( pFileW, "     './datFiles/energies.dat' usi 1:5 ti 'Wext' w l ,\\\n");
+    fprintf( pFileW, "     './datFiles/energies.dat' usi 1:6 ti 'Wkin' w l ,\\\n");
+    fprintf( pFileW, "     './datFiles/energies.dat' usi 1:($2+$3+$4+$6) ti 'Wsum' w l\n\n");
+
     fprintf( pFileW, "set output './pngFiles/enrgdWcoh.svg'\n");
     fprintf( pFileW, "plot './datFiles/energies.dat' usi 1:11 ti 'EMA(dWcoh)' w l\n\n" );
     fprintf( pFileW, "set ylabel \"J/s2\"\n" );
@@ -2236,13 +2245,7 @@ void CartRing::plotEnergies () {
     fprintf( pFileW, "set ylabel \"J/s\"\n" );
     fprintf( pFileW, "set output './pngFiles/enrgdWcoh100.svg'\n");
     fprintf( pFileW, "plot './datFiles/energies.dat' usi 1:13 ti 'dWcoh100' w l\n\n" );
-    fprintf( pFileW, "set output './pngFiles/enrgAll.svg'\n");
-    fprintf( pFileW, "plot './datFiles/energies.dat' usi 1:2 ti 'Wspr' w l ,\\\n");
-    fprintf( pFileW, "     './datFiles/energies.dat' usi 1:3 ti 'WcoD' w l ,\\\n");
-    fprintf( pFileW, "     './datFiles/energies.dat' usi 1:4 ti 'WcoE' w l ,\\\n");
-    fprintf( pFileW, "     './datFiles/energies.dat' usi 1:5 ti 'Wext' w l ,\\\n");
-    fprintf( pFileW, "     './datFiles/energies.dat' usi 1:6 ti 'Wkin' w l ,\\\n");
-    fprintf( pFileW, "     './datFiles/energies.dat' usi 1:($2+$3+$4+$6) ti 'Wsum' w l\n");
+
     fclose( pFileW );
 
     // Prepare Gnuplot data file
