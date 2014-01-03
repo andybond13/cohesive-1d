@@ -906,7 +906,7 @@ void CartRing::NewmarkReso () {
 			}
 
 			std::vector<int> local_ActivCoh = _ActivCoh;
-			MPI::COMM_WORLD.Allreduce( &_ActivCoh[0], &local_ActivCoh[0], _Nx, MPI::INT, MPI_SUM);
+			MPI::COMM_WORLD.Allreduce( &_ActivCoh[0], &local_ActivCoh[0], _Nx-1, MPI::INT, MPI_SUM);
 			MPI::COMM_WORLD.Barrier();
 		}
 	} else {
@@ -918,7 +918,7 @@ void CartRing::NewmarkReso () {
 		}
 
 		std::vector<int> local_ActivCoh = _ActivCoh;
-		MPI::COMM_WORLD.Allreduce( &_ActivCoh[0], &local_ActivCoh[0], _Nx, MPI::INT, MPI_SUM);
+		MPI::COMM_WORLD.Allreduce( &_ActivCoh[0], &local_ActivCoh[0], _Nx-1, MPI::INT, MPI_SUM);
 		MPI::COMM_WORLD.Barrier();
 	}
 
