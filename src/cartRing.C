@@ -990,7 +990,6 @@ void CartRing::NewmarkReso () {
         _Acc[i][1][0] = ( _Fext[i][1][0] + _Fspr[i][0] + _Fcoh[i][0] ) / _m;
         _Acc[i][1][1] = ( _Fext[i][1][1] + _Fspr[i][1] + _Fcoh[i][1] ) / _m;
     }
-cout << "fext(0) = " << _Fext[0][1][0] << " , _fspr(0) = " << _Fspr[0][0] << " , _fcoh(0) = " << _Fcoh[0][0] << endl;
 }
 
 void CartRing::NewmarkCorr () {
@@ -1041,7 +1040,10 @@ double CartRing::sprForc ( const unsigned sprNum ) {
 
     //Compute the average of the strengths of the surrounding cohesive links
 	//for use as spring "yield strength" value
-    double sigY = 0.5 * _SigC[sprNum] + 0.5 * _SigC[ (sprNum - 1 + _Nx) % _Nx];
+    double sigY = 0.0;
+    if (sprNum == 0)             sigY = _SigC[sprNum];
+    else if (sprNum == _Nx-1)    sigY = _SigC[sprNum-1];
+    else                        sigY = 0.5 * _SigC[sprNum] + 0.5 * _SigC[sprNum-1];
 
     //Compute dissipated spring energy
     _WsprD += 0.5 * _A * _Dx * pow( sigY, 2 ) / _E * ( _sprDamage[sprNum] / (1 - _sprDamage[sprNum] ) );
@@ -1286,11 +1288,14 @@ double CartRing::stress ( const unsigned sprNum ) {
 	    	}
 		}
 	
-		//Non-hardening damage model; if both links are forced shut
+		//Non-hardening (elasto-perfectly-plastic) damage model; if both links are forced shut
 		if ((defectRangeFlag == true) && (defectRangeFlag2 == true) && (strain > 0)) {
 	
 			//Determine average strength value of cohesive links ->yield strength of element
-			double sigY = 0.5 * _SigC[sprNum] + 0.5 * _SigC[ (sprNum - 1 + _Nx) % _Nx];
+            double sigY = 0.0;
+            if (sprNum == 0)             sigY = _SigC[sprNum];
+            else if (sprNum == _Nx-1)    sigY = _SigC[sprNum-1];
+            else                        sigY = 0.5 * _SigC[sprNum] + 0.5 * _SigC[sprNum-1];
 	
 			if (_sprDamage[sprNum] == 0.0) {
 				//No previous damage
@@ -2672,7 +2677,7 @@ void CartRing::printCohLaw () const {
         fprintf( pFile, "%12.3e", _T );
 		int count = 0;
 		for (unsigned i = 0; i < _cLaw.size(); i++ ) {
-			if (_cLaw[i] < _begin || _cLaw[i] > _end) continue;
+			if (_cLaw[i] < _begin || _cLaw[i] > _end || _cLaw[i] >= _delta.size()) continue;
 		    fprintf( pFile, "%12.3e", _delta[ _cLaw[i] ] ); 	//delta
 		    fprintf( pFile, "%12.3e", _sigCoh[ _cLaw[i] ] );	//sigma
 			count++;
