@@ -349,6 +349,12 @@ void CartRing::applyVel (  const std::string& velDir, const double strainRate  )
     if ( velDir.compare( 0, 8, "CONST_SR") == 0 ) {	//a radial velocity - Assign direction and value to VVBC
         _ValVelBC[0] = 0;
         _ValVelBC[1] = strainRate; //target strain rate
+        //initialize velocity
+        for ( unsigned i = 0; i < _Vel.size(); i++ ) {
+		    if (!_local[i]) continue;
+            _Vel[i][0][0] = _NodPosOrig[i][0] * strainRate;
+        }
+        _Wext += 0.5 * _m * strainRate * strainRate * _L * _L;
     } else if ( velDir.compare( 0, 9, "CONST_VEL") == 0 ) {	//a radial velocity - Assign direction and value to VVBC
         _ValVelBC[0] = 2;
         _ValVelBC[1] = strainRate; //target velocity
@@ -356,7 +362,6 @@ void CartRing::applyVel (  const std::string& velDir, const double strainRate  )
         std::cout << "Direction " << velDir << " unknown! " << std::endl; 
 		assert(1==0);
     }
-
 }
 
 void CartRing::applyForc ( const double forcVal  ) {
@@ -839,7 +844,6 @@ void CartRing::NewmarkPred () {
         // Predict Velocities
         _Vel[i][1][0] = _Vel[i][0][0] + 0.5 * _Dt * _Acc[i][0][0];
         _Vel[i][1][1] = _Vel[i][0][1] + 0.5 * _Dt * _Acc[i][0][1];
-        if ((i == 2*_Nx-1) && (_ValVelBC[0] == 2) ) _Vel[i][1][0] = _ValVelBC[1];
 
         // Apply Boundary Conditions
         /* NOT YET SURE ON HOW TO DO IT */
@@ -847,8 +851,9 @@ void CartRing::NewmarkPred () {
         _Dis[i][1][0] = _Dt * _Vel[i][1][0];
         _Dis[i][1][1] = _Dt * _Vel[i][1][1];
     }
-   _Dis[0][1][0] = 0.0;
-   _Dis[0][1][1] = 0.0;
+    _Dis[0][1][0] = 0.0;
+    _Dis[0][1][1] = 0.0;
+    _Vel[0][1][0] = 0.0;   
 }
 
 void CartRing::NewmarkReso () {
@@ -999,8 +1004,6 @@ void CartRing::NewmarkCorr () {
         /* SHOULD ACCOUNT FOR BOUNDARY CONDITIONS */
         _Vel[i][2][0] = _Vel[i][1][0] + 0.5 * _Dt * _Acc[i][1][0];
         _Vel[i][2][1] = _Vel[i][1][1] + 0.5 * _Dt * _Acc[i][1][1];
-
-        if ((i == 2*_Nx-1) && (_ValVelBC[0] == 2) ) _Vel[i][2][0] = _ValVelBC[1];
 
         // Compute the kinematic energy
         _Wkin += 0.5 * _m * ( pow( _Vel[i][2][0], 2 ) + pow( _Vel[i][2][1], 2 ) );
@@ -1199,7 +1202,7 @@ void CartRing::boundaryConditions ( const unsigned i ) {
             double diff = target - strainRate;
 		
 	       //Calculate required additional force to get to target F = ma = m*dv/dt
-    	        _VelForcReq[i][0] = -(diff / _Dt) * _Dx * _m * 0.5;
+    	        _VelForcReq[i][0] = -sign * (diff / _Dt) * _Dx * _m * 0.5 - _Fspr[i][0] - _Fcoh[i][0];
             _VelForcReq[i][1] = 0.0;
 
         } else if (type == 1) {
@@ -1217,7 +1220,7 @@ void CartRing::boundaryConditions ( const unsigned i ) {
             if (i == 2 * _Nx - 1) {
                 double thisVel = 0.5 * (_Vel[i][0][0] + _Vel[i][1][0]); //use average of past and current
                 double diff = target - thisVel;
-                _VelForcReq[i][0] = (diff / _Dt) * _m;
+                _VelForcReq[i][0] = (diff / _Dt) * _m - _Fspr[i][0] - _Fcoh[i][0];;
             }
             
         } else {
