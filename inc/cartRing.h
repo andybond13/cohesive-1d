@@ -177,26 +177,6 @@ private:
     std::vector<double> sprVecPred ( const unsigned sprNum ) const;
     std::vector<double> cohVecPred ( const unsigned cohNum ) const;
 
-    //! Compute cosTheta at a node
-    /*!
-        \brief Method to compute the cosine between the current nodal position
-               and the X-axis
-        \param nodNum node
-        \return cosine
-    */
-    double cosTheta ( const unsigned nodNum ) const;
-    double cosThetaPred ( const unsigned nodNum ) const;
-
-    //! Compute sinTheta at a node
-    /*!
-        \brief Method to compute the sine between the current nodal position
-               and the Y-axis
-        \param nodNum node
-        \return sine
-    */
-    double sinTheta ( const unsigned nodNum ) const;
-    double sinThetaPred ( const unsigned nodNum ) const;
-
     //! Methods for second-order explicit Newmark integration scheme
     /*!
         \brief Method to predict velocities and displacements for 2nd order

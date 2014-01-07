@@ -1103,12 +1103,10 @@ std::vector<double> CartRing::cohForc ( const unsigned cohNum ) {
 		    if ( ( _sigCoh[cohNum] > _SigC[cohNum] ) && (defectRangeFlag == false) ) {
 		    	_ActivCoh[cohNum] = true;
 				//Limit stress to maximum value(strength) for this one time-step
-		        _Fcoh[nod_1][0] = -1.0 * _A * _SigC[cohNum] 
-		                            * sinThetaPred( nod_1 );
-		        _Fcoh[nod_1][1] = _A * _SigC[cohNum] * cosThetaPred( nod_1 );
-		        _Fcoh[nod_2][0] = _A * _SigC[cohNum] * sinThetaPred( nod_2 );
-		        _Fcoh[nod_2][1] = -1.0 * _A * _SigC[cohNum]
-		                            * cosThetaPred( nod_2 );
+		        _Fcoh[nod_1][0] = -1.0 * _A * _SigC[cohNum];
+		        _Fcoh[nod_1][1] = _A * _SigC[cohNum] * 0.0;
+		        _Fcoh[nod_2][0] = _A * _SigC[cohNum] * 1.0;
+		        _Fcoh[nod_2][1] = -1.0 * _A * _SigC[cohNum] * 0.0;
 		    }
         }
 
@@ -1840,40 +1838,6 @@ void CartRing::update () {
         if (i == _Nx - 1) continue;
         _D[i][0] = _D[i][1];
     }
-}
-
-double CartRing::cosTheta ( const unsigned nodNum ) const {
-    //Determine distance of nodal location
-    double norm = sqrt( pow( _NodPos[nodNum][0], 2 )
-                      + pow( _NodPos[nodNum][1], 2 ) );
-    //Determine cosine of nodal location
-    return _NodPos[nodNum][0] / norm;
-}
-
-double CartRing::cosThetaPred ( const unsigned nodNum ) const {
-    //Determine expected distance of nodal location
-    double X = _NodPos[nodNum][0] + _Dis[nodNum][1][0];
-    double Y = _NodPos[nodNum][1] + _Dis[nodNum][1][1];
-    double norm = sqrt( pow( X, 2 ) + pow( Y, 2 ) );
-    //Determine expected cosine of nodal location
-    return X / norm;
-}
-
-double CartRing::sinTheta ( const unsigned nodNum ) const {
-    //Determine distance of nodal location
-    double norm = sqrt( pow( _NodPos[nodNum][0], 2 )
-                      + pow( _NodPos[nodNum][1], 2 ) );
-    //Determine sine of nodal location
-    return _NodPos[nodNum][1] / norm;
-}
-
-double CartRing::sinThetaPred ( const unsigned nodNum ) const {
-    //Determine expected distance of nodal location
-    double X = _NodPos[nodNum][0] + _Dis[nodNum][1][0];
-    double Y = _NodPos[nodNum][1] + _Dis[nodNum][1][1];
-    double norm = sqrt( pow( X, 2 ) + pow( Y, 2 ) );
-    //Determine expected sine of nodal location
-    return Y / norm;
 }
 
 std::vector<double> CartRing::sprVec ( const unsigned sprNum ) const {
@@ -2621,10 +2585,8 @@ void CartRing::printNodalInfo () const {
         for ( unsigned i = 0; i < _NodesToPlot.size(); i++ ) {
             unsigned nodNum = _NodesToPlot[i];
 			if (!_local[nodNum]) continue;
-            double v_r = cosTheta( nodNum ) * _Vel[nodNum][0][0]
-                       + sinTheta( nodNum ) * _Vel[nodNum][0][1];
-            double v_t = cosTheta( nodNum ) * _Vel[nodNum][0][1]
-                       - sinTheta( nodNum ) * _Vel[nodNum][0][0];
+            double v_r = 1.0 * _Vel[nodNum][0][0];
+            double v_t = 1.0 * _Vel[nodNum][0][1];
             pFile = fopen( _NodeFiles[i].c_str(), "a" );
             fprintf( pFile, "%12.3e", _T );
             fprintf( pFile, "%12.3e", v_r );
