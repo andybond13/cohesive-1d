@@ -411,6 +411,8 @@ void CartRing::solve ( const double endTime, const unsigned printFrequency, cons
 		_tFlag[1] = 0;		//initialize new time-step flag
 		_stopFlag = false;	//initialize stop flag
 
+        double mult  = (0.8*_Dt_c) / _Dt;
+
         // Explicit Newmark
         MPI::COMM_WORLD.Barrier(); NewmarkPred();
         MPI::COMM_WORLD.Barrier(); NewmarkReso();
@@ -432,11 +434,11 @@ void CartRing::solve ( const double endTime, const unsigned printFrequency, cons
         // Print stuff
         if ( _DisplayFlag ) {
 			if (_numFrag >= 1) {
-		    		if ( _Nt % _DtPrintFrac == 0 ) {	//Use fracture print frequency
+		    		if ( _Nt % (static_cast<int>(mult)*_DtPrintFrac) == 0 ) {	//Use fracture print frequency
 		                printVtk( _Nt );
 				}
 			} else {
-		    	    if ( _Nt % _DtPrintElas == 0 ) {	//Use elastic print frequency
+		    	    if ( _Nt % (static_cast<int>(mult)*_DtPrintElas) == 0 ) {	//Use elastic print frequency
 		     	   printVtk( _Nt );
 				}
             }
