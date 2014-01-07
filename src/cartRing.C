@@ -1253,7 +1253,7 @@ void CartRing::boundaryConditions ( const unsigned i ) {
     }
 
     //If loading is acceptable...calculate it
-    if ( _DSum == 0 && type == 0) {			//Any damage cancels all loading for constant strain rate case
+    if ( _DSum == 0 || type != 0) {			//Any damage cancels all loading for constant strain rate case
         if (type == 0) {
             //applied constant strain rate
     	        _VelForcReq[i][0] = 0.0;
