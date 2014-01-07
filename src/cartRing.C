@@ -194,8 +194,8 @@ void CartRing::setCohLaw ( const std::string& lawTyp,
         if ( param.size() >= 2 ) {
             // _SigC
             if ( param[0].size() == 1 ) {
-                _SigC.assign( _Nx-1, param[0][0] );
-            } else if ( param[0].size() == _Nx-1 ) {
+                _SigC.assign( _Nx, param[0][0] );
+            } else if ( param[0].size() == _Nx ) {
                 _SigC.assign( param[0].begin(), param[0].end() );
             } else {
                 std::cout << "param[0].size() and # of cohesive links "
@@ -203,12 +203,12 @@ void CartRing::setCohLaw ( const std::string& lawTyp,
                           << "only the first value " << param[0][0]
                           << " is considered for all the elements"
                           << std::endl;
-                _SigC.assign( _Nx-1, param[0][0] );
+                _SigC.assign( _Nx, param[0][0] );
             }
             // _DelC
             if ( param[1].size() == 1 ) {
-                _DelC.assign( _Nx-1, param[1][0] );
-            } else if ( param[1].size() == _Nx-1 ) {
+                _DelC.assign( _Nx, param[1][0] );
+            } else if ( param[1].size() == _Nx ) {
                 _DelC.assign( param[1].begin(), param[1].end() );
             } else {
                 std::cout << "param[1].size() and # of cohesive links"
@@ -216,7 +216,7 @@ void CartRing::setCohLaw ( const std::string& lawTyp,
                           << "only the first value " << param[1][0]
                           << " is considered for all the elements"
                           << std::endl;
-                _DelC.assign( _Nx-1, param[1][0] );
+                _DelC.assign( _Nx, param[1][0] );
             }
         } else {
              std::cout << "LINSD requires two parameters sigma_c and delta_c"
@@ -227,8 +227,8 @@ void CartRing::setCohLaw ( const std::string& lawTyp,
         if ( param.size() >= 2 ) {
             // _SigC
             if ( param[0].size() == 1 ) {
-                _SigC.assign( _Nx-1, param[0][0] );
-            } else if ( param[0].size() == _Nx-1 ) {
+                _SigC.assign( _Nx, param[0][0] );
+            } else if ( param[0].size() == _Nx ) {
                 _SigC.assign( param[0].begin(), param[0].end() );
             } else {
                 std::cout << "param[0].size() and # of cohesive links"
@@ -236,26 +236,26 @@ void CartRing::setCohLaw ( const std::string& lawTyp,
                           << "only the first value " << param[0][0]
                           << " is considered for all the elements"
                           << std::endl;
-                _SigC.assign( _Nx-1, param[0][0] );
+                _SigC.assign( _Nx, param[0][0] );
             }
             // _DelC
-            if ( param[1].size() == _Nx-1 ) {
-                _DelC.resize( _Nx-1 );
-                if ( param[0].size() != _Nx-1 ) {
-                    for ( unsigned i = 0; i < _Nx-1; i++ ) {
+            if ( param[1].size() == _Nx ) {
+                _DelC.resize( _Nx );
+                if ( param[0].size() != _Nx ) {
+                    for ( unsigned i = 0; i < _Nx; i++ ) {
                         _DelC[i] = 2 * param[1][i] / param[0][0];	//Gc = sigma*delta/2; delta=2*Gc/s
                     }
                 } else {
-                    for ( unsigned i = 0; i < _Nx-1; i++ ) {
+                    for ( unsigned i = 0; i < _Nx; i++ ) {
                         _DelC[i] = 2 * param[1][i] / param[0][i];
                     }
                 }
             } else {
-                if ( param[0].size() != _Nx-1 ) {
-                    _DelC.assign( _Nx-1, 2 * param[1][0] / param[0][0] );
+                if ( param[0].size() != _Nx ) {
+                    _DelC.assign( _Nx, 2 * param[1][0] / param[0][0] );
                 } else {
-                    _DelC.resize( _Nx-1 );
-                    for ( unsigned i = 0; i < _Nx-1; i++ ) {
+                    _DelC.resize( _Nx );
+                    for ( unsigned i = 0; i < _Nx; i++ ) {
                         _DelC[i] = 2 * param[1][0] / param[0][i];
                     }
                 }
@@ -276,8 +276,8 @@ void CartRing::setCohLaw ( const std::string& lawTyp,
         if ( param.size() >= 2 ) {
             // _SigC
             if ( param[0].size() == 1 ) {
-                _SigC.assign( _Nx-1, param[0][0] );
-            } else if ( param[0].size() == _Nx-1 ) {
+                _SigC.assign( _Nx, param[0][0] );
+            } else if ( param[0].size() == _Nx ) {
                 _SigC.assign( param[0].begin(), param[0].end() );
             } else {
                 std::cout << "param[0].size() and # of cohesive links"
@@ -285,26 +285,26 @@ void CartRing::setCohLaw ( const std::string& lawTyp,
                           << "only the first value " << param[0][0]
                           << " is considered for all the elements"
                           << std::endl;
-                _SigC.assign( _Nx-1, param[0][0] );
+                _SigC.assign( _Nx, param[0][0] );
             }
             // _DelC
-            if ( param[1].size() == _Nx-1 ) {
-                _DelC.resize( _Nx-1 );
-                if ( param[0].size() != _Nx-1 ) {
-                    for ( unsigned i = 0; i < _Nx-1; i++ ) {
+            if ( param[1].size() == _Nx ) {
+                _DelC.resize( _Nx );
+                if ( param[0].size() != _Nx ) {
+                    for ( unsigned i = 0; i < _Nx; i++ ) {
                         _DelC[i] = 3 * param[1][i] / param[0][0];	//Gc = sigma*delta/3; delta=3*Gc/sigmac
                     }
                 } else {
-                    for ( unsigned i = 0; i < _Nx-1; i++ ) {
+                    for ( unsigned i = 0; i < _Nx; i++ ) {
                         _DelC[i] = 3 * param[1][i] / param[0][i];
                     }
                 }
             } else {
-                if ( param[0].size() != _Nx-1 ) {
-                    _DelC.assign( _Nx-1, 3 * param[1][0] / param[0][0] );
+                if ( param[0].size() != _Nx ) {
+                    _DelC.assign( _Nx, 3 * param[1][0] / param[0][0] );
                 } else {
-                    _DelC.resize( _Nx-1 );
-                    for ( unsigned i = 0; i < _Nx-1; i++ ) {
+                    _DelC.resize( _Nx );
+                    for ( unsigned i = 0; i < _Nx; i++ ) {
                         _DelC[i] = 3 * param[1][0] / param[0][i];
                     }
                 }
@@ -328,12 +328,11 @@ void CartRing::setCohLaw ( const std::string& lawTyp,
     }
 
     // resize _ActivCoh, _D, _delta, _and _sigCoh to be size of # of cohesive zones: Nx-1
-    _ActivCoh.assign( _Nx-1, false );
-    _D.resize( _Nx-1 );
-    _delta.resize( _Nx-1 );
-    _sigCoh.resize( _Nx-1 );
+    _ActivCoh.assign( _Nx, false );
+    _D.resize( _Nx );
+    _delta.resize( _Nx );
+    _sigCoh.resize( _Nx );
     for ( unsigned i = _begin; i <= _end; i++ ) {
-        if (i == _Nx - 1) continue;
         _D[i].resize(2);
     }
 }
@@ -748,7 +747,7 @@ void CartRing::buildDiscretization () {
 
     // Build connectivities - assign nodes to springs and links
     _SprCon.resize( _Nx );
-    _CohCon.resize( _Nx -1 );
+    _CohCon.resize( _Nx );
     _NodCon.resize( _NodPos.size() );
     for ( unsigned i = 0; i < _Nx; i++ ) {
         // Build _SpringConnec and _NodeConnec accordingly
@@ -758,9 +757,8 @@ void CartRing::buildDiscretization () {
         _NodCon[2*i+1].first = i;
 
         // Build _CoheJointConnec and _NodeConnec accordingly
-        if (i == _Nx - 1) break;
-        unsigned k = 2*i+1;
-        unsigned j = 2*i+2;
+        int k = 2*i+1-2;
+        unsigned j = 2*i+2-2;
         _CohCon[i].first = k;
         _NodCon[j].second = i;
         _CohCon[i].second = j;
@@ -853,9 +851,6 @@ void CartRing::NewmarkPred () {
         _Dis[i][1][0] = _Dt * _Vel[i][1][0];
         _Dis[i][1][1] = _Dt * _Vel[i][1][1];
     }
-    _Dis[0][1][0] = 0.0;
-    _Dis[0][1][1] = 0.0;
-    _Vel[0][1][0] = 0.0;   
 }
 
 void CartRing::NewmarkReso () {
@@ -900,7 +895,6 @@ void CartRing::NewmarkReso () {
 				size = _end - _begin + 1;
 				begin = _begin;
 				for ( unsigned i = _begin; i <= _end; i++ ) {
-                    if (i == _Nx - 1) continue;
 					std::vector<double> wCoh = cohForc( i );
 					_Wcoh[0] += wCoh[0];
 					_Wcoh[1] += wCoh[1];
@@ -908,19 +902,18 @@ void CartRing::NewmarkReso () {
 			}
 
 			std::vector<int> local_ActivCoh = _ActivCoh;
-			MPI::COMM_WORLD.Allreduce( &_ActivCoh[0], &local_ActivCoh[0], _Nx-1, MPI::INT, MPI_SUM);
+			MPI::COMM_WORLD.Allreduce( &_ActivCoh[0], &local_ActivCoh[0], _Nx, MPI::INT, MPI_SUM);
 			MPI::COMM_WORLD.Barrier();
 		}
 	} else {
 		for ( unsigned i = _begin; i <= _end; i++ ) {
-            if (i == _Nx - 1) continue;
 			std::vector<double> wCoh = cohForc( i );
 			_Wcoh[0] += wCoh[0];
 			_Wcoh[1] += wCoh[1];
 		}
 
 		std::vector<int> local_ActivCoh = _ActivCoh;
-		MPI::COMM_WORLD.Allreduce( &_ActivCoh[0], &local_ActivCoh[0], _Nx-1, MPI::INT, MPI_SUM);
+		MPI::COMM_WORLD.Allreduce( &_ActivCoh[0], &local_ActivCoh[0], _Nx, MPI::INT, MPI_SUM);
 		MPI::COMM_WORLD.Barrier();
 	}
 
@@ -1002,7 +995,6 @@ void CartRing::NewmarkCorr () {
 		if (!_local[i]) continue;
 
         // Update velocities
-        /* SHOULD ACCOUNT FOR BOUNDARY CONDITIONS */
         _Vel[i][2][0] = _Vel[i][1][0] + 0.5 * _Dt * _Acc[i][1][0];
         _Vel[i][2][1] = _Vel[i][1][1] + 0.5 * _Dt * _Acc[i][1][1];
 
@@ -1013,10 +1005,6 @@ void CartRing::NewmarkCorr () {
         _Dis[i][2][0] = _Dis[i][1][0];
         _Dis[i][2][1] = _Dis[i][1][1];
     }
-    _Vel[0][2][0] = 0.0;
-    _Vel[0][2][1] = 0.0;
-    _Dis[0][2][0] = 0.0;
-    _Dis[0][2][1] = 0.0;
 }
 
 double CartRing::sprForc ( const unsigned sprNum ) {
@@ -1055,107 +1043,196 @@ double CartRing::sprForc ( const unsigned sprNum ) {
 }
 
 std::vector<double> CartRing::cohForc ( const unsigned cohNum ) {
-
     // Find out the nodes connected to cohNum link
-    unsigned nod_1 = _CohCon[cohNum].first;
+    int nod_1 = _CohCon[cohNum].first;
     unsigned nod_2 = _CohCon[cohNum].second;
 
 	//ensure that these are owned by the this processor
-	assert(_local[nod_1] && _local[nod_2]);
+	assert(_local[nod_1] || nod_1 == -1); assert(_local[nod_2]);
 
 	//ensure that these are owned by the same processor
-	assert(_owner[nod_1] == _owner[nod_2]);
+	assert(_owner[nod_1] == _owner[nod_2] || nod_1 == -1);
 
     //Create and assign variable that indicates if this link is open or closed
 	//false = closed, true = open
-    bool cohMod = ( _ActivCoh.size() == _CohCon.size() )
-                ? _ActivCoh[cohNum] : false;
+    if (nod_1 != -1) {
+        bool cohMod = ( _ActivCoh.size() == _CohCon.size() )
+                    ? _ActivCoh[cohNum] : false;
 
-    std::vector<double> wCoh(2);
-    // Compute the cohesive force
-    if ( cohMod == false ) {
-	//If closed...
-	//cohesive force is an average of spring forces of surrounding elements
-        _Fcoh[nod_1][0] = -0.5 * ( _Fspr[nod_1][0] - _Fspr[nod_2][0] );
-        _Fcoh[nod_1][1] = -0.5 * ( _Fspr[nod_1][1] - _Fspr[nod_2][1] );
-        _Fcoh[nod_2][0] = -0.5 * ( _Fspr[nod_2][0] - _Fspr[nod_1][0] );
-        _Fcoh[nod_2][1] = -0.5 * ( _Fspr[nod_2][1] - _Fspr[nod_1][1] );
+        std::vector<double> wCoh(2);
+        // Compute the cohesive force
+        if ( cohMod == false ) {
+            	//If closed...
+            	//cohesive force is an average of spring forces of surrounding elements
+            _Fcoh[nod_1][0] = -0.5 * ( _Fspr[nod_1][0] - _Fspr[nod_2][0] );
+            _Fcoh[nod_1][1] = -0.5 * ( _Fspr[nod_1][1] - _Fspr[nod_2][1] );
+            _Fcoh[nod_2][0] = -0.5 * ( _Fspr[nod_2][0] - _Fspr[nod_1][0] );
+            _Fcoh[nod_2][1] = -0.5 * ( _Fspr[nod_2][1] - _Fspr[nod_1][1] );
+    
+            // Test the value of the cohesive stress
+            if ( _SigC.size() == _Nx ) {
+                _sigCoh[cohNum] = 0;
+                _sigCoh[cohNum] = _Fcoh[nod_1][0] / _A;
+    			    //Detect if this cohesive link is within the restricted zone of another,
+        			//already open link
+        			bool defectRangeFlag = false;	//Assume it is not
+        			if (_defectRange > 0) {
+        				//Convert the range into number of links
+        				int d_num = (int)floor( _defectRange * (double)(_Nx) / _L) ;
+	        	      	for (int i = -d_num; i <= d_num; i++) {
+	        				//Create link number that is checked against
+	        	            unsigned j = ( i + (int)(cohNum) + _Nx) % _Nx;
+	        				if (_ActivCoh[j] == true) { 
+	        					defectRangeFlag = true;		//true if link is open
+	        				}
 
-        // Test the value of the cohesive stress
-        if ( _SigC.size() == _Nx -1 ) {
-			_sigCoh[cohNum] = 0;
-		    _sigCoh[cohNum] = _Fcoh[nod_1][0] / _A;
-			//Detect if this cohesive link is within the restricted zone of another,
-			//already open link
-			bool defectRangeFlag = false;	//Assume it is not
-			if (_defectRange > 0) {
-				//Convert the range into number of links
-				int d_num = (int)floor( _defectRange * (double)(_Nx) / _L) ;
-		      	for (int i = -d_num; i <= d_num; i++) {
-					//Create link number that is checked against
-		            unsigned j = ( i + (int)(cohNum) + _Nx) % _Nx;
-                    if (j == _Nx - 1) continue;
-					if (_ActivCoh[j] == true) { 
-						defectRangeFlag = true;		//true if link is open
-					}
+	        		    }
+	        		}
+	        		//Allow link to open if all other links in range are closed, & stress>strength
+	        	    if ( ( _sigCoh[cohNum] > _SigC[cohNum] ) && (defectRangeFlag == false) ) {
+	            	    	_ActivCoh[cohNum] = true;
+cout << "opening CZ " << cohNum << ", _T = " << _T << "_sigCoh = " << _sigCoh[cohNum] << endl;
+	        			//Limit stress to maximum value(strength) for this one time-step
+	        	        _Fcoh[nod_1][0] = -1.0 * _A * _SigC[cohNum];
+	        	        _Fcoh[nod_1][1] = _A * _SigC[cohNum] * 0.0;
+	        	        _Fcoh[nod_2][0] = _A * _SigC[cohNum] * 1.0;
+	        	        _Fcoh[nod_2][1] = -1.0 * _A * _SigC[cohNum] * 0.0;
+	        	    }
+            }
 
-			    }
-			}
-			//Allow link to open if all other links in range are closed, & stress>strength
-		    if ( ( _sigCoh[cohNum] > _SigC[cohNum] ) && (defectRangeFlag == false) ) {
-		    	_ActivCoh[cohNum] = true;
-				//Limit stress to maximum value(strength) for this one time-step
-		        _Fcoh[nod_1][0] = -1.0 * _A * _SigC[cohNum];
-		        _Fcoh[nod_1][1] = _A * _SigC[cohNum] * 0.0;
-		        _Fcoh[nod_2][0] = _A * _SigC[cohNum] * 1.0;
-		        _Fcoh[nod_2][1] = -1.0 * _A * _SigC[cohNum] * 0.0;
-		    }
-        }
-
-    } else {
-	//If open...
-        // Compute crack opening distance
-        std::vector<double> crack = cohVecPred( cohNum );
-
-	//Assign delta as the cross-product of the crack location vector 
-		//and the crack opening (cohesive link) vector; delta in theta-dir only
-	//_delta[cohNum] = 0;
-       // _delta[cohNum] = sqrt( pow( crack[0], 2 ) + pow( crack[1], 2 ) );
-	_delta[cohNum] = crack[0];	
-
-	//Assign damage as ratio of delta to maximum separation
-	//Store _D[][] as the maxiumum damage
-        double dammage = _delta[cohNum] / _DelC[cohNum];
-        if ( dammage > 1.0 || _D[cohNum][0] >= 1 ) {
-            _D[cohNum][1] = 1.0;
         } else {
-            _D[cohNum][1] = ( dammage > _D[cohNum][0] ) ? dammage : _D[cohNum][0];
-        }
+	    //If open...
+            // Compute crack opening distance
+            std::vector<double> crack = cohVecPred( cohNum );
+
+	        //Assign delta as the cross-product of the crack location vector 
+	        	//and the crack opening (cohesive link) vector; delta in theta-dir only
+	        //_delta[cohNum] = 0;
+           // _delta[cohNum] = sqrt( pow( crack[0], 2 ) + pow( crack[1], 2 ) );
+	        _delta[cohNum] = crack[0];	
+
+	        //Assign damage as ratio of delta to maximum separation
+	        //Store _D[][] as the maxiumum damage
+            double dammage = _delta[cohNum] / _DelC[cohNum];
+            if ( dammage > 1.0 || _D[cohNum][0] >= 1 ) {
+                _D[cohNum][1] = 1.0;
+            } else {
+                _D[cohNum][1] = ( dammage > _D[cohNum][0] ) ? dammage : _D[cohNum][0];
+            }
 	
-        // Compute the cohesive traction
-	_sigCoh[cohNum] = 0;
-        cohStr( cohNum ); //assign _sigCoh
+            // Compute the cohesive traction
+	        _sigCoh[cohNum] = 0;
+            cohStr( cohNum ); //assign _sigCoh
 
-        // Compute the cohesive force and apply in the theta direction
-        _Fcoh[nod_1][0] = _A * _sigCoh[cohNum] * 1.0;
-        _Fcoh[nod_1][1] = _A * _sigCoh[cohNum] * 0.0;
-        _Fcoh[nod_2][0] = -1.0 * _A * _sigCoh[cohNum] * 1.0;
-        _Fcoh[nod_2][1] = -1.0 * _A * _sigCoh[cohNum] * 0.0;
+            // Compute the cohesive force and apply in the theta direction
+            _Fcoh[nod_1][0] = _A * _sigCoh[cohNum] * 1.0;
+            _Fcoh[nod_1][1] = _A * _sigCoh[cohNum] * 0.0;
+            _Fcoh[nod_2][0] = -1.0 * _A * _sigCoh[cohNum] * 1.0;
+            _Fcoh[nod_2][1] = -1.0 * _A * _sigCoh[cohNum] * 0.0;
 
-        // Compute cohesive energy
-        wCoh[1] = 0.5 * _A * _sigCoh[cohNum] * _delta[cohNum];
-		if (_lawTyp.compare( 0 , 3, "LIN" ) == 0 ) { 
-       		wCoh[0] = 0.5 * _A * _SigC[cohNum] * _D[cohNum][1] * _DelC[cohNum];
-		}
-		else if (_lawTyp.compare( 0 , 4, "SQRT" ) == 0 ) {
-	        wCoh[0] = _A * _SigC[cohNum] * _D[cohNum][1] * _DelC[cohNum] * (0.5 - 1.0/6.0 * sqrt(_D[cohNum][1]));
-		}
-		else {
-			cout << "cohesive law " << _lawTyp << " not yet implemented!" << endl;
-		}
+            // Compute cohesive energy
+            wCoh[1] = 0.5 * _A * _sigCoh[cohNum] * _delta[cohNum];
+	        	if (_lawTyp.compare( 0 , 3, "LIN" ) == 0 ) { 
+           		wCoh[0] = 0.5 * _A * _SigC[cohNum] * _D[cohNum][1] * _DelC[cohNum];
+	        	}
+	        	else if (_lawTyp.compare( 0 , 4, "SQRT" ) == 0 ) {
+	            wCoh[0] = _A * _SigC[cohNum] * _D[cohNum][1] * _DelC[cohNum] * (0.5 - 1.0/6.0 * sqrt(_D[cohNum][1]));
+	        	}
+	        	else {
+	        		cout << "cohesive law " << _lawTyp << " not yet implemented!" << endl;
+	        	}
+
+        }
+        return wCoh;
+    } else { //nod1 = -1***********
+        bool cohMod = ( _ActivCoh.size() == _CohCon.size() )
+                    ? _ActivCoh[cohNum] : false;
+
+        std::vector<double> wCoh(2);
+        // Compute the cohesive force
+        if ( cohMod == false ) {
+            	//If closed...
+            	//cohesive force is an average of spring forces of surrounding elements
+            _Fcoh[nod_2][0] = -1.0 * ( _Fspr[nod_2][0] );
+            _Fcoh[nod_2][1] = -1.0 * ( _Fspr[nod_2][1] );
+    
+            // Test the value of the cohesive stress
+            if ( _SigC.size() == _Nx ) {
+                _sigCoh[cohNum] = 0;
+                _sigCoh[cohNum] = -_Fcoh[nod_2][0] / _A;
+    			    //Detect if this cohesive link is within the restricted zone of another,
+        			//already open link
+        			bool defectRangeFlag = false;	//Assume it is not
+        			if (_defectRange > 0) {
+        				//Convert the range into number of links
+        				int d_num = (int)floor( _defectRange * (double)(_Nx) / _L) ;
+	        	      	for (int i = -d_num; i <= d_num; i++) {
+	        				//Create link number that is checked against
+	        	            unsigned j = ( i + (int)(cohNum) + _Nx) % _Nx;
+	        				if (_ActivCoh[j] == true) { 
+	        					defectRangeFlag = true;		//true if link is open
+	        				}
+
+	        		    }
+	        		}
+	        		//Allow link to open if all other links in range are closed, & stress>strength
+	        	    if ( ( _sigCoh[cohNum] > _SigC[cohNum] ) && (defectRangeFlag == false) ) {
+cout << "opening CZ " << cohNum << ", _T = " << _T << "_sigCoh = " << _sigCoh[cohNum] << endl;
+	            	    	_ActivCoh[cohNum] = true;
+	        			//Limit stress to maximum value(strength) for this one time-step
+	        	        _Fcoh[nod_2][0] = _A * _SigC[cohNum] * 1.0;
+	        	        _Fcoh[nod_2][1] = -1.0 * _A * _SigC[cohNum] * 0.0;
+	        	    }
+            }
+
+        } else {
+	    //If open...
+            // Compute crack opening distance
+            std::vector<double> crack = cohVecPred( cohNum );
+
+	        //Assign delta as the cross-product of the crack location vector 
+	        	//and the crack opening (cohesive link) vector; delta in theta-dir only
+	        //_delta[cohNum] = 0;
+           // _delta[cohNum] = sqrt( pow( crack[0], 2 ) + pow( crack[1], 2 ) );
+	        _delta[cohNum] = crack[0];	
+
+	        //Assign damage as ratio of delta to maximum separation
+	        //Store _D[][] as the maxiumum damage
+            double dammage = _delta[cohNum] / _DelC[cohNum];
+cout << "damage = " << dammage << endl;
+            if ( dammage > 1.0 || _D[cohNum][0] >= 1 ) {
+                _D[cohNum][1] = 1.0;
+            } else {
+                _D[cohNum][1] = ( dammage > _D[cohNum][0] ) ? dammage : _D[cohNum][0];
+            }
+	
+            // Compute the cohesive traction
+	        _sigCoh[cohNum] = 0;
+            cohStr( cohNum ); //assign _sigCoh
+
+            // Compute the cohesive force and apply in the theta direction
+            _Fcoh[nod_2][0] = -1.0 * _A * _sigCoh[cohNum] * 1.0;
+            _Fcoh[nod_2][1] = -1.0 * _A * _sigCoh[cohNum] * 0.0;
+
+            // Compute cohesive energy
+            wCoh[1] = 0.5 * _A * _sigCoh[cohNum] * _delta[cohNum];
+	        	if (_lawTyp.compare( 0 , 3, "LIN" ) == 0 ) { 
+           		wCoh[0] = 0.5 * _A * _SigC[cohNum] * _D[cohNum][1] * _DelC[cohNum];
+	        	}
+	        	else if (_lawTyp.compare( 0 , 4, "SQRT" ) == 0 ) {
+	            wCoh[0] = _A * _SigC[cohNum] * _D[cohNum][1] * _DelC[cohNum] * (0.5 - 1.0/6.0 * sqrt(_D[cohNum][1]));
+	        	}
+	        	else {
+	        		cout << "cohesive law " << _lawTyp << " not yet implemented!" << endl;
+	        	}
+
+        }
+        return wCoh;
+
 
     }
-    return wCoh;
+
+
 }
 
 void CartRing::boundaryConditions ( const unsigned i ) {
@@ -1275,12 +1352,10 @@ double CartRing::stress ( const unsigned sprNum ) {
         int d_num = (int)floor( _defectRange * (double)(_Nx) / _L) ;	//convert the range to # of links
         for (int i = -d_num; i <= d_num; i++) {
             unsigned j = ( i + (int)(sprNum) + _Nx) % _Nx;	//center the range at this element and check
-            if (j == _Nx - 1) continue;
 			if (_ActivCoh[j] == true) { 
 				defectRangeFlag = true;		//true if any links within range are open
 			}
 			unsigned k = ( i + (int)(sprNum-1) + _Nx) % _Nx;
-            if (k == _Nx - 1) continue;
 			if (_ActivCoh[k] == true) { 
 				defectRangeFlag2 = true;		//true if any links within range are open
 	    	}
@@ -1424,7 +1499,6 @@ void CartRing::checkStable () {
     //Check to see if any cohesive link is in compression
     unsigned compression = 0;
     for (unsigned i = _begin; i <= _end; i++) {  
-        if (i == _Nx - 1) continue;
         	if (_sigCoh[i] < 0 ) {
 	        compression = 1;
 	        _tFlag[1] = 1;	//enable one level of time-step refinement
@@ -1435,7 +1509,6 @@ void CartRing::checkStable () {
     //	meaning that its past the 95% mark and left of the scaled elastic modulus line
     unsigned temp = 0;
     for (unsigned i = _begin; i <= _end; i++ ){
-        if (i == _Nx - 1) continue;
 	 	if ( ( (_delta[i] > 0 ) && ( _D[i][1] < (_sigCoh[i]) / (_E/_Dx) )) || _sigCoh[i] > 0.95 * _SigC[i]) {
 			temp += 1; 		//count the number of links in this critical region
 		}
@@ -1463,7 +1536,6 @@ void CartRing::fragCount () {
     _DSum = 0;
 
     for (unsigned i = _begin; i <= _end; i++ ){
-         if (i == _Nx - 1) continue;
 		//Sum the total amount of damage to all links (analogous to WcohD)
 		_DSum += (_D[i][1] >= 1) ? 1 : _D[i][1];
 
@@ -1837,7 +1909,6 @@ void CartRing::update () {
 
     // Internal variables
     for ( unsigned i = _begin; i <= _end; i++ ) {
-        if (i == _Nx - 1) continue;
         _D[i][0] = _D[i][1];
     }
 }
@@ -1875,15 +1946,20 @@ std::vector<double> CartRing::sprVecPred ( const unsigned sprNum ) const {
 std::vector<double> CartRing::cohVecPred ( const unsigned cohNum ) const {
 
     // Get the connectivity of the element cohNum
-    unsigned nod_1 = _CohCon[cohNum].first;
+    int nod_1 = _CohCon[cohNum].first;
     unsigned nod_2 = _CohCon[cohNum].second;
 
     //Calculate expected link length vector
     std::vector<double> elmVec (2);
-    elmVec[0] = ( _NodPos[nod_2][0] + _Dis[nod_2][1][0] )
-              - ( _NodPos[nod_1][0] + _Dis[nod_1][1][0] );
-    elmVec[1] = ( _NodPos[nod_2][1] + _Dis[nod_2][1][1] )
-              - ( _NodPos[nod_1][1] + _Dis[nod_1][1][1] );
+    if (nod_1 != -1) {
+        elmVec[0] = ( _NodPos[nod_2][0] + _Dis[nod_2][1][0] )
+                  - ( _NodPos[nod_1][0] + _Dis[nod_1][1][0] );
+        elmVec[1] = ( _NodPos[nod_2][1] + _Dis[nod_2][1][1] )
+                  - ( _NodPos[nod_1][1] + _Dis[nod_1][1][1] );
+    } else { //nod_1 == -1
+        elmVec[0] = ( _NodPos[nod_2][0] + _Dis[nod_2][1][0] );
+        elmVec[1] = ( _NodPos[nod_2][1] + _Dis[nod_2][1][1] );
+    }
     return elmVec;
 }
 
@@ -2463,13 +2539,11 @@ void CartRing::printConnec () const {
         printf ( "|      Springs     |   Cohesive Zones  |\n" );
         printf ( "|   n1         n2  |   n1          n2  |\n" );
         printf ( "|------------------|-------------------|\n" );
-        for ( unsigned j = 0; j < _Nx-1; j++ ) {
+        for ( unsigned j = 0; j < _Nx; j++ ) {
             printf ( "|   %2d         %2d  |   %2d          %2d  |\n",
                      _SprCon[j].first, _SprCon[j].second,
                      _CohCon[j].first, _CohCon[j].second );
         }
-        printf ( "|   %2d         %2d  |                   |\n",
-                 _SprCon[_Nx-1].first, _SprCon[_Nx-1].second);
         printf ( "|------------------|-------------------|\n" );
     }
 }
@@ -2702,7 +2776,6 @@ void CartRing::printSTheta () const {
         pFile = fopen( _SThetaFile.c_str(), "a" );
         //fprintf( pFile, "%12.3e", _T );
 	for (unsigned i = 0; i < _Nx; i++) {
-        if (i == _Nx - 1) continue;
 		if (i < _begin || i > _end) continue;
 	    double sprTheta = (double)(360*(i+0.5))/(double)(_Nx);
 	    double cohTheta = (double)(360*(i+1))/(double)(_Nx);

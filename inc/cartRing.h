@@ -404,7 +404,7 @@ private:
     std::vector<std::vector<double> > _NodPos;
     std::vector<std::vector<double> > _NodPosOrig;
     std::vector<std::pair<unsigned,unsigned> > _SprCon;
-    std::vector<std::pair<unsigned,unsigned> > _CohCon;
+    std::vector<std::pair<int,int> > _CohCon;
     std::vector<std::pair<unsigned,unsigned> > _NodCon;
 
     //! Attributes describing the kinematics
