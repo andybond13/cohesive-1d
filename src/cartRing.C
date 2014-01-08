@@ -349,14 +349,29 @@ void CartRing::applyVel (  const std::string& velDir, const double strainRate  )
         _ValVelBC[0] = 0;
         _ValVelBC[1] = strainRate; //target strain rate
         //initialize velocity
+        double energy = 0.0;
         for ( unsigned i = 0; i < _Vel.size(); i++ ) {
 		    if (!_local[i]) continue;
             _Vel[i][0][0] = _NodPosOrig[i][0] * strainRate;
+            energy += 0.5 * _m * _Vel[i][0][0] * _Vel[i][0][0];
         }
-        _Wext += 0.5 * _m * strainRate * strainRate * _L * _L;
+        if (_myid == 0) _Wext += energy;
+    } else if ( velDir.compare( 0, 11, "CONST_ENDSR") == 0 ) {	//a radial velocity - Assign direction and value to VVBC
+        _ValVelBC[0] = 3;
+        _ValVelBC[1] = strainRate; //target strain rate
+        //initialize velocity
+        double energy = 0.0;
+        for ( unsigned i = 0; i < _Vel.size(); i++ ) {
+		    if (!_local[i]) continue;
+            _Vel[i][0][0] = _NodPosOrig[i][0] * strainRate;
+            energy += 0.5 * _m * _Vel[i][0][0] * _Vel[i][0][0];
+        }
+        if (_myid == 0) _Wext += energy;
     } else if ( velDir.compare( 0, 9, "CONST_VEL") == 0 ) {	//a radial velocity - Assign direction and value to VVBC
         _ValVelBC[0] = 2;
         _ValVelBC[1] = strainRate; //target velocity
+        _Vel[2*_Nx-1][0][0] = strainRate;
+        if (_myid == 0) _Wext += 0.5 * _m * strainRate * strainRate;
     } else {
         std::cout << "Direction " << velDir << " unknown! " << std::endl; 
 		assert(1==0);
@@ -1199,7 +1214,6 @@ cout << "opening CZ " << cohNum << ", _T = " << _T << "_sigCoh = " << _sigCoh[co
 	        //Assign damage as ratio of delta to maximum separation
 	        //Store _D[][] as the maxiumum damage
             double dammage = _delta[cohNum] / _DelC[cohNum];
-cout << "damage = " << dammage << endl;
             if ( dammage > 1.0 || _D[cohNum][0] >= 1 ) {
                 _D[cohNum][1] = 1.0;
             } else {
@@ -1252,8 +1266,26 @@ void CartRing::boundaryConditions ( const unsigned i ) {
 	}
     }
 
+    bool flag = false; //are nodes open?
+//    if (_DSum == 0) flag == false; else flag == true;
+    for (unsigned j = 0; j < _ActivCoh.size(); ++j) {
+        if (_ActivCoh[j] == 1) {
+            flag = true;
+            break;
+        }
+    }
+
+    if (type == 3) {
+        if (flag == false) {
+            type = 0;
+        } else {
+            type = 2;
+            target = target * _L; //strainrate target -> velocity target
+        }
+    }
+
     //If loading is acceptable...calculate it
-    if ( _DSum == 0 || type != 0) {			//Any damage cancels all loading for constant strain rate case
+    if ( flag == false || type != 0) {			//Any damage cancels all loading for constant strain rate case
         if (type == 0) {
             //applied constant strain rate
     	        _VelForcReq[i][0] = 0.0;
