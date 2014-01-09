@@ -695,7 +695,7 @@ void CartRing::domainDecomposition() {
 	//assign whether the node is to be owned locally or not
 	for (unsigned i = 0; i < 2*_Nx; ++i) {
 	
-		if ((i >= 2*_begin+1 && i <= 2*_end+2) || (i == 0 && _myid == _numprocs-1)) {
+		if (i >= 2*_begin+1 && i <= 2*_end+2) {
 			_local[i] = true;
 			owner[i] = _myid;
 		} else {
@@ -1108,12 +1108,28 @@ std::vector<double> CartRing::cohForc ( const unsigned cohNum ) {
 	        		//Allow link to open if all other links in range are closed, & stress>strength
 	        	    if ( ( _sigCoh[cohNum] > _SigC[cohNum] ) && (defectRangeFlag == false) ) {
 	            	    	_ActivCoh[cohNum] = true;
-cout << "opening CZ " << cohNum << ", _T = " << _T << "_sigCoh = " << _sigCoh[cohNum] << endl;
 	        			//Limit stress to maximum value(strength) for this one time-step
 	        	        _Fcoh[nod_1][0] = -1.0 * _A * _SigC[cohNum];
 	        	        _Fcoh[nod_1][1] = _A * _SigC[cohNum] * 0.0;
 	        	        _Fcoh[nod_2][0] = _A * _SigC[cohNum] * 1.0;
 	        	        _Fcoh[nod_2][1] = -1.0 * _A * _SigC[cohNum] * 0.0;
+
+/*
+            			if (_lawTyp.compare( 0 , 3, "LIN" ) == 0 ) { 
+                        double gc = _SigC[cohNum] * _DelC[cohNum] * 0.5;
+                        _Wext += _A * _SigC[cohNum] * _SigC[cohNum] / (2*_E + _SigC[cohNum] * _SigC[cohNum]/gc);
+            			} else if (_lawTyp.compare( 0 , 4, "SQRT" ) == 0 ) {
+                        double gc = _SigC[cohNum] * _DelC[cohNum]/3;
+                        double d_inter = _SigC[cohNum] / (_E +  _SigC[cohNum]*_SigC[cohNum]/(2*gc));
+                        for (unsigned j = 0; j < 20; ++j) {
+                            d_inter = _Dx/_E * _SigC[cohNum]*(1-sqrt(d_inter/_DelC[cohNum]));
+                        }
+                        _Wext += _A * _SigC[cohNum]* d_inter * (0.5-1.0/6.0*sqrt(d_inter /_DelC[cohNum]));
+			        } else {
+			            	cout << "cohesive law " << _lawTyp << " not yet implemented!" << endl;
+			            	assert(1==0);
+            			}*/
+
 	        	    }
             }
 
@@ -1194,11 +1210,25 @@ cout << "opening CZ " << cohNum << ", _T = " << _T << "_sigCoh = " << _sigCoh[co
 	        		}
 	        		//Allow link to open if all other links in range are closed, & stress>strength
 	        	    if ( ( _sigCoh[cohNum] > _SigC[cohNum] ) && (defectRangeFlag == false) ) {
-cout << "opening CZ " << cohNum << ", _T = " << _T << "_sigCoh = " << _sigCoh[cohNum] << endl;
 	            	    	_ActivCoh[cohNum] = true;
 	        			//Limit stress to maximum value(strength) for this one time-step
 	        	        _Fcoh[nod_2][0] = _A * _SigC[cohNum] * 1.0;
 	        	        _Fcoh[nod_2][1] = -1.0 * _A * _SigC[cohNum] * 0.0;
+/*
+            			if (_lawTyp.compare( 0 , 3, "LIN" ) == 0 ) { 
+                        double gc = _SigC[cohNum] * _DelC[cohNum] * 0.5;
+                        _Wext += _A * _SigC[cohNum] * _SigC[cohNum] / (2*_E + _SigC[cohNum] * _SigC[cohNum]/gc);
+            			} else if (_lawTyp.compare( 0 , 4, "SQRT" ) == 0 ) {
+                        double gc = _SigC[cohNum] * _DelC[cohNum]/3;
+                        double d_inter = _SigC[cohNum] / (_E +  _SigC[cohNum]*_SigC[cohNum]/(2*gc));
+                        for (unsigned j = 0; j < 20; ++j) {
+                            d_inter = _Dx/_E * _SigC[cohNum]*(1-sqrt(d_inter/_DelC[cohNum]));
+                        }
+                        _Wext += _A * _SigC[cohNum]* d_inter * (0.5-1.0/6.0*sqrt(d_inter /_DelC[cohNum]));
+			        } else {
+			            	cout << "cohesive law " << _lawTyp << " not yet implemented!" << endl;
+			            	assert(1==0);
+            			}*/
 	        	    }
             }
 
@@ -1331,9 +1361,23 @@ void CartRing::boundaryConditions ( const unsigned i ) {
             if (i == 2 * _Nx - 1) {
                 double thisVel = 0.5 * (_Vel[i][0][0] + _Vel[i][1][0]); //use average of past and current
                 double diff = target - thisVel;
-                _VelForcReq[i][0] = (diff / _Dt) * _m - _Fspr[i][0] - _Fcoh[i][0];;
+                _VelForcReq[i][0] = (diff / _Dt) * _m - _Fspr[i][0] - _Fcoh[i][0];
             }
-            
+            /*
+        } else if (type == 3) {
+            //applied constant strain rate
+    	        _VelForcReq[i][0] = 0.0;
+            _VelForcReq[i][1] = 0.0;
+
+            if (i == 2 * _Nx - 1) {
+                double thisVel = 0.5 * (_Vel[i][0][0] + _Vel[i][1][0]); //use average of past and current
+                double strainRate = thisVel / _L;
+                double diff = target - strainRate;
+		
+        	       //Calculate required additional force to get to target F = ma = m*dv/dt
+        	        _VelForcReq[i][0] = (diff / _Dt) * _Dx * _m * 0.5;
+            }
+    */
         } else {
 		    std::cout << "Boundary condition unknown!" << std::endl; 
         }
@@ -2613,9 +2657,6 @@ void CartRing::printHeader ( const std::string& vtkFile ) const {
 
 void CartRing::printMesh ( const std::string& vtkFile ) const {
 	int var = 0;
-	if (_myid == 0) var += 1;
-	if (_myid == _numprocs-1) var += -1;
-
     FILE * pFile;
     pFile = fopen( vtkFile.c_str(), "a" );
     unsigned nodSize = _NodPos.size();
@@ -2644,8 +2685,6 @@ void CartRing::printMesh ( const std::string& vtkFile ) const {
 
 void CartRing::printPointData ( const std::string& vtkFile ) const {
 	int var = 0;
-	if (_myid == 0) var += 1;
-	if (_myid == _numprocs-1) var += -1;
 
     FILE * pFile;
     pFile = fopen( vtkFile.c_str(), "a" );
