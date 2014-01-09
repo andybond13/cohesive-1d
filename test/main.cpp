@@ -61,14 +61,14 @@ int main (int argc, char* argv[]) {
     double param2 = 0;
     double param3 = 0;
 
-    MatPropGen properties(distrib, param1, param2, param3, nx-1);
+    MatPropGen properties(distrib, param1, param2, param3, nx);
     properties.assign(cohPar[0], cohNums); //assign randomly generated values to cohesive strength: cohPar[0]
     cohPar[1].assign( 1, 100 );	//Gc (in N/m = Pa*m) value for cohesive zone: cohPar[1]
     ring.setCohLaw( "SQRTSG", cohPar );	//set cohesive zone parameters
     ring.plotCohLaw( cohNums );
     
 
-    ring.display( 10, 10 );//print vtk files every x timesteps
+    ring.display( 1, 1 );//print vtk files every x timesteps
 
     unsigned nodes[] = { 0, 1 };
     std::vector<unsigned> node2plot ( nodes, nodes+2 );
@@ -90,6 +90,7 @@ int main (int argc, char* argv[]) {
     double refine = 0.2;				//refine the timestep by a factor of x per level of refinement (x or x^2)
 	bool allowPlateauEnd = true; 	//allow the program to exit early when cohesive/fracture energy plateaus
 	bool checkEnergy = true;			//report on energy balance, end when too much energy generated
+    double refine = 0.01;				//refine the timestep by a factor of x per level of refinement (x or x^2)
 	ring.solve( totalTime, printFreq, refine, allowPlateauEnd, checkEnergy );
     ring.printHisto();
 
