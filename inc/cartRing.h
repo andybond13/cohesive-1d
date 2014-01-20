@@ -336,7 +336,7 @@ private:
     void printElmInfo () const;
     void printGlobalInfo () const;
     void printCohLaw () const;
-    void printFrags () const;
+    void printFrags ();
     void printSTheta () const;
     void printClean () const;
     void plotHisto ();
@@ -548,6 +548,7 @@ private:
     */
 	// 
     unsigned _numFrag;
+    unsigned numFragSymm(); //number of fragments considering a symmetrical loading (free bar with symm vs. cantilever bar)
     std::vector<int> _fragLoc;
     std::vector<double> _fragLength;
     double _DSum;

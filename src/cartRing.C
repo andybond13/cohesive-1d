@@ -478,7 +478,7 @@ void CartRing::solve ( const double endTime, const unsigned printFrequency, cons
 	if (_myid == 0 ) {
 		std::cout << "---------------------------" << std::endl;
 		std::cout << "Execution Finished" << std::endl;
-		std::cout << "Number of Fragments:   " << _numFrag << std::endl;
+		std::cout << "Number of Fragments:   " << numFragSymm() << std::endl;
 		std::cout << "Number of Iterations:  " << _Nt << std::endl;
 		std::cout << "Final Cohesive Energy: " << _Wcoh[0] << std::endl;
 		std::cout << "Final Stability Ratio: " << _Wsum / _Wmax << std::endl;
@@ -494,7 +494,7 @@ void CartRing::solve ( const double endTime, const unsigned printFrequency, cons
 		pFile = fopen ( _logPath.c_str(), "a" );
 		fprintf( pFile, "\n\n## Execution finished\n" );
 		fprintf( pFile, "##    time: %s", asctime( tinf ) );
-		fprintf( pFile, "##    number of fragments: %u\n", _numFrag );
+		fprintf( pFile, "##    number of fragments: %u\n", numFragSymm() );
 		fprintf( pFile, "##    number of iterations: %u\n", _Nt );
 		fprintf( pFile, "##    final cohesive energy: %e\n", _Wcoh[0] );
 		fprintf( pFile, "##    final stability ratio: %e\n", _Wsum/_Wmax );
@@ -505,6 +505,15 @@ void CartRing::solve ( const double endTime, const unsigned printFrequency, cons
 	MPI::COMM_WORLD.Barrier(); MPI::COMM_WORLD.Allreduce ( &_WsprD, &_WsprD, 1, MPI::DOUBLE, MPI_SUM);
 	MPI::Finalize(); 
 
+}
+
+unsigned CartRing::numFragSymm() {
+    if (_numFrag == 0)
+        return 1;
+    if (_D[0][1] >= 1) 
+        return 2 * _numFrag;
+    else
+        return 2 * _numFrag + 1;
 }
 
 void CartRing::printHisto() {
@@ -648,7 +657,7 @@ void CartRing::grabInfo (double& runTime, unsigned& numFrag, unsigned& nIter, do
     //Returns all values
 	if (_myid > 0) return;
     runTime = ( (double)std::clock() - (double)_start ) / (double) CLOCKS_PER_SEC;
-    numFrag = _numFrag;
+    numFrag = numFragSymm();
     nIter = _Nt;
     Wcoh0 = _Wcoh[0];
     Wsum = _Wsum;
@@ -667,7 +676,7 @@ void CartRing::grabInfo (double& runTime, unsigned& numFrag, unsigned& nIter, do
     //Returns doubles only
 	if (_myid > 0) return;
     runTime = ( (double)std::clock() - (double)_start ) / (double) CLOCKS_PER_SEC;
-    numFrag = _numFrag;
+    numFrag = numFragSymm();
     nIter = _Nt;
     Wcoh0 = _Wcoh[0];
     Wsum = _Wsum;
@@ -1628,23 +1637,27 @@ void CartRing::fragCount () {
 
 	if (_myid == 0) {
 		//Find the length of each fragment
-		if (_numFrag == 1){
+		if (_numFrag == 0){
 			_fragLength.resize(1);
-			_fragLength[0] = _Nx * _Dx;	//if only one break, length is whole circumference of ring
+			_fragLength[0] = _Nx * _Dx *2 ;	//if only one break, length is whole circumference of ring
 		} else {
 			double nElems = 0;
-			_fragLength.resize(_numFrag);
-			for (unsigned k = 0; k < _fragLength.size(); k++){
-				if (k == 0){
-					//Length (# elems between) from last to first through theta=0=2pi
-					nElems = fabs( _Nx - fabs( _fragLoc[0] - _fragLoc[_numFrag-1])); 
+			_fragLength.resize(numFragSymm());
+			for (unsigned k = 0; k < _numFrag; k++){
+				if (k == _numFrag - 1){
+					//Length (# elems between) from last to end
+					nElems = fabs( _fragLoc[k] - _Nx);
 				} else {
 					//Length (# elems between)
-					nElems = fabs( _fragLoc[k - 1] - _fragLoc[k]);
+					nElems = fabs( _fragLoc[k] - _fragLoc[k + 1]);
 				}
 				//Convert number of elements to actual length
-				_fragLength[k] = nElems * _Dx;
+				_fragLength[2*k] = nElems * _Dx;
+				_fragLength[2*k+1] = nElems * _Dx;
 			}
+            	//Convert number of elements to actual length
+            if (_numFrag * 2 != numFragSymm()) //if not broken at 0 - also D[0][1] < 1
+		    _fragLength[_numFrag * 2 - 1] = _fragLoc[0] * 2;
 		}
 
 		//Initialize statistics of fragment length distribution
@@ -2467,19 +2480,20 @@ void CartRing::plotFrags (){
     fprintf( pFileW, " -- MH[DCML] (2010)\n");
     fprintf( pFileW, "# Fragmentation Information\n" );
     fprintf( pFileW, "set xlabel \"time (s)\"\n" );
-    fprintf( pFileW, "set ylabel \"Number of Fragments\"\n" );
+    fprintf( pFileW, "set ylabel \"Number of Cracks/Fragments\"\n" );
     fprintf( pFileW, "set terminal svg size 1200, 800\n\n" );
     fprintf( pFileW, "set output './pngFiles/numFrag.svg'\n");
-    fprintf( pFileW, "plot './datFiles/fraginfo.dat' usi 1:3 ti 'Sum of Damage' w l,\\\n" );
-    fprintf( pFileW, "     './datFiles/fraginfo.dat' usi 1:2 ti '# Frags' w l\n\n" );
+    fprintf( pFileW, "plot './datFiles/fraginfo.dat' usi 1:4 ti 'Sum of Damage' w l,\\\n" );
+    fprintf( pFileW, "     './datFiles/fraginfo.dat' usi 1:2 ti '# Cracks' w l,\\\n" );
+    fprintf( pFileW, "     './datFiles/fraginfo.dat' usi 1:3 ti '# Frags' w l\n\n" );
 
 
     fprintf( pFileW, "set xlabel \"time (s)\"\n" );
     fprintf( pFileW, "set ylabel \"stress (Pa)\"\n" );
     fprintf( pFileW, "set output './pngFiles/SigL_R_C.svg'\n");
-    fprintf( pFileW, " plot './datFiles/fraginfo.dat' usi 1:10 ti 'SigL'w l,\\\n");
-    fprintf( pFileW, "             './datFiles/fraginfo.dat' usi 1:11 ti 'SigR' w l,\\\n");
-    fprintf( pFileW, "             './datFiles/fraginfo.dat' usi 1:13 ti 'SigC' w l\n\n");
+    fprintf( pFileW, " plot './datFiles/fraginfo.dat' usi 1:11 ti 'SigL'w l,\\\n");
+    fprintf( pFileW, "             './datFiles/fraginfo.dat' usi 1:12 ti 'SigR' w l,\\\n");
+    fprintf( pFileW, "             './datFiles/fraginfo.dat' usi 1:14 ti 'SigC' w l\n\n");
 
 
     fprintf( pFileW, "set logscale y\n" );		//Time-step graph
@@ -2499,7 +2513,7 @@ void CartRing::plotFrags (){
     fprintf( pFile, "# GNUPLOT file generated by <ring.h>" );
     fprintf( pFile, " -- MH [DCML] (2010)\n" );
     fprintf( pFile, "# Fragmentation Information\n" );
-    fprintf( pFile, "#       time      #frags   DamageSum        Mean      Median         Max         Min");
+    fprintf( pFile, "#       time     #cracks   DamageSum       #frags       Mean      Median         Max         Min");
     fprintf( pFile, "       StDev       Range        Skew    Ex. Kurt.       SigL        SigR      SigL*R        SigC");
     fprintf( pFile, "((R*L^2)/|L|) (Locations)\n");
     fclose( pFile );
@@ -2807,13 +2821,14 @@ void CartRing::printCohLaw () const {
     }
 }
 
-void CartRing::printFrags () const {
+void CartRing::printFrags () {
     unsigned cohNum =19;
     if ( _FragFile.size() > 0 ) {
         FILE * pFile;
         pFile = fopen( _FragFile.c_str(), "a" );
         fprintf( pFile, "%12.3e", _T );
         fprintf( pFile, "%12u", _numFrag );
+        fprintf( pFile, "%12u", numFragSymm() );
         fprintf( pFile, "%12.3f", _DSum );
         fprintf( pFile, "%12.3e", _fMean );
         fprintf( pFile, "%12.3e", _fMed );
