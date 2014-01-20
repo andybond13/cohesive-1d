@@ -1074,7 +1074,7 @@ std::vector<double> CartRing::cohForc ( const unsigned cohNum ) {
     unsigned nod_2 = _CohCon[cohNum].second;
 
 	//ensure that these are owned by the this processor
-	assert(_local[nod_1] || nod_1 == -1); assert(_local[nod_2]);
+	//assert(_local[nod_1] || nod_1 == -1); assert(_local[nod_2]);
 
 	//ensure that these are owned by the same processor
 	assert(_owner[nod_1] == _owner[nod_2] || nod_1 == -1);
