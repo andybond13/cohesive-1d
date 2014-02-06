@@ -1646,7 +1646,7 @@ void CartRing::fragCount () {
 			for (unsigned k = 0; k < _numFrag; k++){
 				if (k == _numFrag - 1){
 					//Length (# elems between) from last to end
-					nElems = fabs( _fragLoc[k] - _Nx);
+					nElems = fabs( _fragLoc[k] - static_cast<int>(_Nx));
 				} else {
 					//Length (# elems between)
 					nElems = fabs( _fragLoc[k] - _fragLoc[k + 1]);
@@ -1657,7 +1657,8 @@ void CartRing::fragCount () {
 			}
             	//Convert number of elements to actual length
             if (_numFrag * 2 != numFragSymm()) //if not broken at 0 - also D[0][1] < 1
-		    _fragLength[_numFrag * 2 - 1] = _fragLoc[0] * 2;
+		    _fragLength[_numFrag * 2 - 1] = _fragLoc[0] * 2 * _Dx;
+            
 		}
 
 		//Initialize statistics of fragment length distribution
