@@ -88,6 +88,12 @@ MatPropGen::MatPropGen ( const std::string distrib, const double parameter1,
 		_weak = parameter2;	//Strength of affected regions
     }    
 
+    if (distrib == "Sinusoid") {
+        _amplitude = parameter1;
+	_frequency = parameter2;
+	_phase	   = parameter3;
+    }
+
 }
 
 void MatPropGen::assign ( std::vector<double>& cohPar, std::vector<unsigned>& cohNums) {
@@ -139,6 +145,14 @@ void MatPropGen::assign ( std::vector<double>& cohPar, std::vector<unsigned>& co
     if (_distrib == "Weibull") {
 	std::vector<double> output;
 	Weibull(output);
+	for (int i = 0; i < _nx; i++) {
+	    cohPar[i] = output[i];
+	}
+    }
+
+    if (_distrib == "Sinusoid") {
+	std::vector<double> output;
+	Sinusoid(output);
 	for (int i = 0; i < _nx; i++) {
 	    cohPar[i] = output[i];
 	}
@@ -311,6 +325,16 @@ void MatPropGen::Poisson (std::vector<double>& output) {
     std::cout << "-------" << std::endl;
     std::cout << "Poisson Process generated weak spots:  " << count2 << std::endl;
     std::cout << "-------" << std::endl;
+}
+
+
+void MatPropGen::Sinusoid (std::vector<double>& output) {
+    output.resize(_nx);
+    for (int i = 0; i < _nx; ++i) {
+	double PI = atan(1.0)*4;
+        double in = static_cast<double>(i) * _frequency * 2.0 * PI + _phase;
+        output[i] = _amplitude * sin(in);
+    }
 }
 
 

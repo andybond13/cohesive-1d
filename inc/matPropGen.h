@@ -67,7 +67,9 @@ private:
     double _max;
     double _normal;
     double _weak;
-
+    double _amplitude;
+    double _frequency;
+    double _phase;
     //! Other inputs
     /*! 
         \brief Which distribution is specified and the size of cohPar.
@@ -88,6 +90,7 @@ private:
     void Uniform (std::vector<double>& output);
     void Weibull (std::vector<double>& output);
     void Poisson (std::vector<double>& output);
+    void Sinusoid (std::vector<double>& output);
 
 };
 
