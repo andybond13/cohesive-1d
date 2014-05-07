@@ -332,7 +332,7 @@ void MatPropGen::Sinusoid (std::vector<double>& output) {
     output.resize(_nx);
     for (int i = 0; i < _nx; ++i) {
 	double PI = atan(1.0)*4;
-        double in = static_cast<double>(i) * _frequency * 2.0 * PI + _phase;
+        double in = static_cast<double>(i)/_nx * _frequency * 2.0 * PI + _phase;
         output[i] = _amplitude * sin(in);
     }
 }
