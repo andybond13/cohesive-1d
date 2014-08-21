@@ -87,7 +87,6 @@ int main (int argc, char* argv[]) {
 
     double totalTime = 5.0e-06;		//end time of simulation
     unsigned printFreq = 1;			//print table/graph data every x timesteps
-    double refine = 0.2;				//refine the timestep by a factor of x per level of refinement (x or x^2)
 	bool allowPlateauEnd = true; 	//allow the program to exit early when cohesive/fracture energy plateaus
 	bool checkEnergy = true;			//report on energy balance, end when too much energy generated
     double refine = 0.01;				//refine the timestep by a factor of x per level of refinement (x or x^2)

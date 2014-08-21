@@ -1,5 +1,5 @@
 CPP       = mpic++
-CPP_FLAGS = -O3 -Wall -fPIC #-g
+CPP_FLAGS = -O2 -Wall -fPIC #-g -Wall
 SOFTWARE  = ./utilities
 BOOST_ROOT = $(SOFTWARE)/boost/
 LIBS = -lboost_system -lboost_filesystem
@@ -20,8 +20,10 @@ ifeq ($(UNAME), Linux)
 	LIBS += -L $(BOOST_ROOT)stage/lib/
 	INCS += -I$(BOOST_ROOT) -I./ci -I$(CTLINC) -I$(SOFTWARE)/utilities 
 endif
-ifeq ($(UNAME), OSX)
+ifeq ($(UNAME), Darwin)
 	# do something OSX-y
+	LIBS += -L /sw/opt/boost-1_55/lib/
+	INCS += -I /sw/opt/boost-1_55/include/ -I /sw/include
 endif
 
 #check 32 or 64 bit

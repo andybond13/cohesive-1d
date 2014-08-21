@@ -146,7 +146,7 @@ void ParallelCombiner::combineSet(std::vector<std::string> inSet, int nx) {
 	string line;
 	string oldLine;
 	int linecount = 0;
-	std::ifstream files[inSet.size()];
+	std::ifstream* files = new std::ifstream[inSet.size()];
 	for(unsigned i = 0; i < inSet.size(); i++) {
 		assert(exists(inSet[i]));
 		string filename = inSet[i];
@@ -403,7 +403,7 @@ void ParallelCombiner::combineCohLaw(std::string inPath, bool deleteFlag) {
 	//open all files in set
 	string line;
 	int linecount = 0;
-	std::ifstream files[inSet.size()];
+	std::ifstream* files = new ifstream[inSet.size()];
 	for(unsigned i = 0; i < inSet.size(); i++) {
 		assert(exists(inSet[i]));
 		string filename = inSet[i];
@@ -494,9 +494,9 @@ void ParallelCombiner::combineSTheta(std::string inPath, bool deleteFlag) {
 
 	//open all files in set
 	string line;
-	string oldLine[inSet.size()];
+	vector<string> oldLine(inSet.size());
 	int linecount = 0;
-	std::ifstream files[inSet.size()];
+	std::ifstream* files = new ifstream[inSet.size()];
 	for(unsigned i = 0; i < inSet.size(); i++) {
 		assert(exists(inSet[i]));
 		string filename = inSet[i];

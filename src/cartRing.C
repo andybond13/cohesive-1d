@@ -16,6 +16,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include <iostream>
+#include <numeric>
 #include <fstream>
 #include <stdio.h>
 #include <assert.h>
@@ -1307,14 +1308,7 @@ void CartRing::boundaryConditions ( const unsigned i ) {
 	}
     }
 
-    bool flag = false; //are nodes open?
-//    if (_DSum == 0) flag == false; else flag == true;
-    for (unsigned j = 0; j < _ActivCoh.size(); ++j) {
-        if (_ActivCoh[j] == 1) {
-            flag = true;
-            break;
-        }
-    }
+	bool flag = static_cast<bool>(std::accumulate(_ActivCoh.begin(),_ActivCoh.end(),0));
 
     if (type == 3) {
         if (flag == false) {
