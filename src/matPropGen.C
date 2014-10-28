@@ -75,10 +75,17 @@ MatPropGen::MatPropGen ( const std::string distrib, const double parameter1,
         _max = parameter1;
     }
 
-    //Weibull - Weibull distribution defined by lambda and k (lambda - shape, k - scale, unused)
-    if (distrib == "Weibull") {
+    //Weibull - Weibull distribution defined by lambda and k (lambda - scale, k - shape, unused)
+    if (distrib == "Weibull2") {
         _lambda = parameter1;
         _k = parameter2;
+    }
+
+    //Weibull - Weibull distribution defined by lambda and k (lambda - scale, k - shape/Weibull modulus, loc - location/weakest value)
+    if (distrib == "Weibull3") {
+        _lambda = parameter1;
+        _k = parameter2;
+        _loc = parameter3;
     }
 
     //Poisson Process - Weak Points (one-node length) (normal, weak, lambda)
@@ -142,13 +149,20 @@ void MatPropGen::assign ( std::vector<double>& cohPar, std::vector<unsigned>& co
 	    cohPar[i] = output[i];
 	}
     }
-    if (_distrib == "Weibull") {
+    if (_distrib == "Weibull2") {
 	std::vector<double> output;
-	Weibull(output);
+	Weibull2(output);
 	for (int i = 0; i < _nx; i++) {
 	    cohPar[i] = output[i];
 	}
     }
+    if (_distrib == "Weibull3") {
+	std::vector<double> output;
+	Weibull2(output);
+	for (int i = 0; i < _nx; i++) {
+	    cohPar[i] = output[i] + _loc;
+	}
+	}
 
     if (_distrib == "Sinusoid") {
 	std::vector<double> output;
@@ -274,7 +288,7 @@ void MatPropGen::Gamma (std::vector<double>& output) {
     }
 }
 
-void MatPropGen::Weibull (std::vector<double>& output) {
+void MatPropGen::Weibull2 (std::vector<double>& output) {
     //Create a uniform distrib'd number
     boost::mt19937 rng(static_cast<unsigned> (time(0)));
 
@@ -288,7 +302,6 @@ void MatPropGen::Weibull (std::vector<double>& output) {
 	output[i] = pow( -log(1 - (var_wbd() / 32768)), 1/_k) * _lambda;
     }
 }
-
 
 void MatPropGen::Poisson (std::vector<double>& output) {
     //Create a uniform distrib'd number
