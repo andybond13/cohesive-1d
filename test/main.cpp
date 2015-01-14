@@ -42,7 +42,7 @@ int main (int argc, char* argv[]) {
     //ring.initVel( "RADIA", 2.5*1.592e+1 );
     //ring.applyForc( "LINE", "RADIA", 1.592e+1 );
 //    ring.applyForc( 6.0e-1 );
-    ring.applyVel( "CONST_SR", 0.1);	//apply strain rate = 1000 1/s;
+    ring.applyVel( "CONST_ENDSR", 0.004*SR);	//apply strain rate = 1000 1/s;
 
     // cohesive law
     /**/
