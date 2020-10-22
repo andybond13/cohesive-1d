@@ -503,7 +503,9 @@ void CartRing::solve ( const double endTime, const unsigned printFrequency, cons
 	}
 
 	//end parallel run
-	MPI::COMM_WORLD.Barrier(); MPI::COMM_WORLD.Allreduce ( &_WsprD, &_WsprD, 1, MPI::DOUBLE, MPI_SUM);
+    double WsprD_sum;
+	MPI::COMM_WORLD.Barrier(); MPI::COMM_WORLD.Allreduce ( &_WsprD, &WsprD_sum, 1, MPI::DOUBLE, MPI_SUM);
+    _WsprD = WsprD_sum;
 	MPI::Finalize(); 
 
 }
@@ -746,7 +748,7 @@ std::string CartRing::convertInt(int number) const
 }
 
 void CartRing::buildDiscretization () {
-    //this has been converted from axisymmetricRing->flaming-avenger so that it is linear, x = [0,L];
+    //this has been converted from axisymmetricRing->cohesive-1d so that it is linear, x = [0,L];
 
     // Build _NodPos, assign node locations
     _NodPos.resize( 2*_Nx ); 		//node locations[node number][x or y]
@@ -1525,11 +1527,23 @@ void CartRing::cohStr ( const unsigned cohNum ) {
 void CartRing::energBalance () {
 
 	_WextT = 0;
+    double Wspr_sum = 0;
+    double WsprD_sum = 0;
+    double Wkin_sum = 0;
+
+
 	MPI::COMM_WORLD.Barrier(); 
 	COMM_WORLD.Allreduce ( &_Wext, &_WextT, 1, MPI::DOUBLE, MPI_SUM);
-	COMM_WORLD.Allreduce ( &_Wspr, &_Wspr, 1, MPI::DOUBLE, MPI_SUM);
-	COMM_WORLD.Allreduce ( &_WsprD, &_WsprD, 1, MPI::DOUBLE, MPI_SUM);
-	COMM_WORLD.Allreduce ( &_Wkin, &_Wkin, 1, MPI::DOUBLE, MPI_SUM);
+
+	COMM_WORLD.Allreduce ( &_Wspr, &Wspr_sum, 1, MPI::DOUBLE, MPI_SUM);
+    _Wspr = Wspr_sum;
+
+	COMM_WORLD.Allreduce ( &_WsprD, &WsprD_sum, 1, MPI::DOUBLE, MPI_SUM);
+    _WsprD = WsprD_sum;
+
+	COMM_WORLD.Allreduce ( &_Wkin, &Wkin_sum, 1, MPI::DOUBLE, MPI_SUM);
+    _Wkin = Wkin_sum;
+
 	MPI::COMM_WORLD.Barrier();
 
 	//Sum internal energies

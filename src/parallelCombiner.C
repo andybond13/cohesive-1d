@@ -135,7 +135,7 @@ void ParallelCombiner::combineSet(std::vector<std::string> inSet, int nx) {
 
 	//open target file
 	assert(exists(inSet[0]));
-	ofstream outFile;
+	std::ofstream outFile;
 	string outFileName = inSet[0].substr(0,inSet[0].length()-4) + "_multi.vtk";
 
 	std::sort(inSet.begin(), inSet.end(),doj::alphanum_less<std::string>());
@@ -395,7 +395,7 @@ void ParallelCombiner::combineCohLaw(std::string inPath, bool deleteFlag) {
 
 	//open target file
 	assert(exists(inSet[0]));
-	ofstream outFile;
+	std::ofstream outFile;
 
 	string outFileName = inSet[0].substr(0,inSet[0].length()-6) + ".dat";
 	outFile.open(outFileName.c_str());	
@@ -403,7 +403,7 @@ void ParallelCombiner::combineCohLaw(std::string inPath, bool deleteFlag) {
 	//open all files in set
 	string line;
 	int linecount = 0;
-	std::ifstream* files = new ifstream[inSet.size()];
+	std::ifstream* files = new std::ifstream[inSet.size()];
 	for(unsigned i = 0; i < inSet.size(); i++) {
 		assert(exists(inSet[i]));
 		string filename = inSet[i];
@@ -487,7 +487,7 @@ void ParallelCombiner::combineSTheta(std::string inPath, bool deleteFlag) {
 
 	//open target file
 	assert(exists(inSet[0]));
-	ofstream outFile;
+	std::ofstream outFile;
 
 	string outFileName = inSet[0].substr(0,inSet[0].length()-6) + ".dat";
 	outFile.open(outFileName.c_str());	
@@ -496,7 +496,7 @@ void ParallelCombiner::combineSTheta(std::string inPath, bool deleteFlag) {
 	string line;
 	vector<string> oldLine(inSet.size());
 	int linecount = 0;
-	std::ifstream* files = new ifstream[inSet.size()];
+	std::ifstream* files = new std::ifstream[inSet.size()];
 	for(unsigned i = 0; i < inSet.size(); i++) {
 		assert(exists(inSet[i]));
 		string filename = inSet[i];

@@ -12,6 +12,7 @@
 
 *******************************************************************************/
 #include "cartRing.h"
+#include <filesystem>
 #include <iostream>
 #include <math.h>
 #include "matPropGen.h"
@@ -30,9 +31,17 @@ int main (int argc, char* argv[]) {
     int nx     = 100;		// number of elements
 	
 	//path to results directory
-//    std::string path = "~/andrew/Duke/results";
-	std::string path = "/Volumes/Stershic-HybridHD/Users/andrewstershic/Code/flaming-shame/results";
-    std::string multiResultsPath = "/Volumes/Stershic-HybridHS/Users/andrewstershic/Code/flaming-shame/results";
+    std::string currentPath = std::filesystem::current_path().string();
+	std::string path = currentPath + "/results/";
+    std::string multiResultsPath = path; 
+
+    //create folders if they don't exist
+    std::filesystem::create_directories(path);
+    std::filesystem::create_directories(path + "/datFiles/");
+    std::filesystem::create_directories(path + "/automatedRuns/");
+    std::filesystem::create_directories(path + "/gnuplot/");
+    std::filesystem::create_directories(path + "/pngFiles/");
+    std::filesystem::create_directories(path + "/vtkFiles/");
 
 	//create ring object
     CartRing ring( L, A, rho, E, nx, path );
@@ -42,7 +51,8 @@ int main (int argc, char* argv[]) {
     //ring.initVel( "RADIA", 2.5*1.592e+1 );
     //ring.applyForc( "LINE", "RADIA", 1.592e+1 );
 //    ring.applyForc( 6.0e-1 );
-    ring.applyVel( "CONST_ENDSR", 0.004*SR);	//apply strain rate = 1000 1/s;
+	double SR = 10.0; // strain rate [1/s]
+    ring.applyVel( "CONST_ENDSR", SR);	//apply strain rate
 
     // cohesive law
     /**/

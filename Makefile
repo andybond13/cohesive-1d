@@ -1,12 +1,10 @@
 CPP       = mpic++
-CPP_FLAGS = -O2 -Wall -fPIC #-g -Wall
+CPP_FLAGS = -std=c++17 -Wall -fPIC -g     #debug
+#CPP_FLAGS = -std=c++17 -Wall -fPIC -O2    #production
 SOFTWARE  = ./utilities
-BOOST_ROOT = $(SOFTWARE)/boost/
+BOOST_ROOT = /usr/local/Cellar/boost/1.73.0
 LIBS = -lboost_system -lboost_filesystem
 
-#CTL       = $(SOFTWARE)/utils/ctl
-#CTLINC    = $(CTL)/include
-#CTLLIB    = $(CTL)/lib/libctl_g++Linuxx86_64/libctl.so
 INCS      = -I./inc
 SRC       = ./src/
 OBJ       = ./bin/
@@ -18,12 +16,12 @@ TEST      = ./test/
 UNAME := $(shell uname)
 ifeq ($(UNAME), Linux)
 	LIBS += -L $(BOOST_ROOT)stage/lib/
-	INCS += -I$(BOOST_ROOT) -I./ci -I$(CTLINC) -I$(SOFTWARE)/utilities 
+	INCS += -I $(BOOST_ROOT) -I$(SOFTWARE)/utilities 
 endif
 ifeq ($(UNAME), Darwin)
-	# do something OSX-y
-	LIBS += -L /sw/opt/boost-1_55/lib/
-	INCS += -I /sw/opt/boost-1_55/include/ -I /sw/include
+#	# do something OSX-y
+    LIBS += -L $(BOOST_ROOT)/lib/
+    INCS += -I $(BOOST_ROOT)/include/
 endif
 
 #check 32 or 64 bit
@@ -58,35 +56,5 @@ $(OBJMAIN)ParallelCombiner.o: $(SRC)parallelCombiner.C
 	$(CPP) $(CPP_FLAGS) -c $(INCS) $(SRC)parallelCombiner.C -o $(OBJMAIN)ParallelCombiner.o
 
 
-# Compilation of the componant as a shared library and a remote executables
-#$(OBJSERV)connectCR.o: $(SRC)connectCR.cpp
-#	$(CPP) $(CPP_FLAGS) -c $(INCS) $(SRC)connectCR.cpp -o $(OBJSERV)connectCR.o
-
-#$(OBJSERV)connectMPG.o: $(SRC)connectMPG.cpp
-#	$(CPP) $(CPP_FLAGS) -c $(INCS) $(SRC)connectMPG.cpp -o $(OBJSERV)connectMPG.o
-
-#$(OBJSERV)libCartRing.so: $(OBJSERV)connectCR.o $(OBJMAIN)CartRing.o
-#	$(CPP) $(CPP_FLAGS) -shared -o $(OBJSERV)libCartRing.so $(OBJSERV)connectCR.o $(OBJMAIN)CartRing.o
-
-#$(OBJSERV)libMatPropGen.so: $(OBJSERV)connectMPG.o $(OBJMAIN)MatPropGen.o
-#	$(CPP) $(CPP_FLAGS) -shared -o $(OBJSERV)libMatPropGen.so $(OBJSERV)connectMPG.o $(OBJMAIN)MatPropGen.o
-
-#$(OBJSERV)CartRing.exe: $(OBJSERV)connectCR.o $(OBJMAIN)CartRing.o
-#	$(CPP) $(CPP_FLAGS) -o $(OBJSERV)CartRing.exe $(OBJSERV)connectCR.o $(OBJMAIN)CartRing.o $(CTLLIB)
-
-#$(OBJSERV)MatPropGen.exe: $(OBJSERV)connectMPG.o $(OBJMAIN)MatPropGen.o
-#	$(CPP) $(CPP_FLAGS) -o $(OBJSERV)MatPropGen.exe $(OBJSERV)connectMPG.o $(OBJMAIN)MatPropGen.o $(CTLLIB)
-
-
-# compilation d'un client faisant appel au service
-#client.exe: $(OBJCLIE)client.o
-#	$(CPP) $(CPP_FLAGS) -o $(OBJCLIE)client.exe $(OBJCLIE)client.o $(CTLLIB)
-
-#$(OBJCLIE)client.o: $(TEST)client.cpp
-#	$(CPP) $(CPP_FLAGS) -c $(INCS) $(TEST)client.cpp -o $(OBJCLIE)client.o
-
-
 clean:
 	rm $(OBJMAIN)*.o $(OBJMAIN)*.exe
-	#rm $(OBJSERV)*.o $(OBJSERV)*.so $(OBJSERV)*.exe
-	#rm $(OBJCLIE)*.o $(OBJCLIE)*.exe
